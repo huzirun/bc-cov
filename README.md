@@ -1,17 +1,19 @@
-# SpringBoot-Vue-Demo
+# springboot-vue-demo
 
-#### 介绍
+## Project setup
+```
+npm install
+```
 
-从0手撸一个前后端分离的管理系统框架。
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
 
+### Compiles and minifies for production
+```
+npm run build
+```
 
-前台：Vue3，vue router，vuex，element-plus，axios
-
-后台：SpringBoot，Mybatis-plus
-
-
-简单、方便、快捷
-
-
-让学习像吃饭一样轻松和快乐！
-
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
