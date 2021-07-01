@@ -9,8 +9,8 @@
 
 <!--    搜索区域-->
     <div style="margin: 10px 0">
-      <el-input v-model="search" placeholder="请输入关键字" style="width: 20%"></el-input>
-      <el-button type="primary" style="margin-left: 5px">查询</el-button>
+      <el-input v-model="search" placeholder="请输入关键字" style="width: 20%" clearable></el-input>
+      <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
     </div>
     <el-table
         :data="tableData"
@@ -45,10 +45,10 @@
       </el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-popconfirm title="确定删除吗？">
+          <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+          <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.row.id)">
             <template #reference>
-              <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+              <el-button size="mini" type="danger">删除</el-button>
             </template>
           </el-popconfirm>
         </template>
@@ -61,7 +61,7 @@
           @current-change="handleCurrentChange"
           :current-page="currentPage"
           :page-sizes="[5, 10, 20]"
-          :page-size="10"
+          :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
       </el-pagination>
@@ -101,6 +101,8 @@
 <script>
 
 
+import request from "@/utils/request";
+
 export default {
   name: 'Home',
   components: {
@@ -112,31 +114,99 @@ export default {
       dialogVisible: false,
       search: '',
       currentPage: 1,
-      total: 10,
-      tableData: [
-
-      ]
+      pageSize: 10,
+      total: 0,
+      tableData: []
     }
   },
+  created() {
+    this.load()
+  },
   methods: {
+    load() {
+      request.get("/api/user", {
+        params: {
+          pageNum: this.currentPage,
+          pageSize: this.pageSize,
+          search: this.search
+        }
+      }).then(res => {
+        console.log(res)
+        this.tableData = res.data.records
+        this.total = res.data.total
+      })
+    },
     add() {
       this.dialogVisible = true
       this.form = {}
     },
     save() {
+      if (this.form.id) {  // 更新
+        request.put("/api/user", this.form).then(res => {
+          console.log(res)
+          if (res.code === '0') {
+            this.$message({
+              type: "success",
+              message: "更新成功"
+            })
+          } else {
+            this.$message({
+              type: "error",
+              message: res.msg
+            })
+          }
+          this.load() // 刷新表格的数据
+          this.dialogVisible = false  // 关闭弹窗
+        })
+      }  else {  // 新增
+        request.post("/api/user", this.form).then(res => {
+          console.log(res)
+          if (res.code === '0') {
+            this.$message({
+              type: "success",
+              message: "新增成功"
+            })
+          } else {
+            this.$message({
+              type: "error",
+              message: res.msg
+            })
+          }
+
+          this.load() // 刷新表格的数据
+          this.dialogVisible = false  // 关闭弹窗
+        })
+      }
 
     },
-    handleEdit() {
-
+    handleEdit(row) {
+      this.form = JSON.parse(JSON.stringify(row))
+      this.dialogVisible = true
     },
-    handleDelete() {
-
+    handleDelete(id) {
+      console.log(id)
+      request.delete("/api/user/" + id).then(res => {
+        if (res.code === '0') {
+          this.$message({
+            type: "success",
+            message: "删除成功"
+          })
+        } else {
+          this.$message({
+            type: "error",
+            message: res.msg
+          })
+        }
+        this.load()  // 删除之后重新加载表格的数据
+      })
     },
-    handleSizeChange() {
-
+    handleSizeChange(pageSize) {   // 改变当前每页的个数触发
+      this.pageSize = pageSize
+      this.load()
     },
-    handleCurrentChange() {
-
+    handleCurrentChange(pageNum) {  // 改变当前页码触发
+      this.currentPage = pageNum
+      this.load()
     }
   }
 }
