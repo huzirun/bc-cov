@@ -2,7 +2,7 @@
   <div style="padding: 10px">
 <!--    功能区域-->
     <div style="margin: 10px 0">
-      <el-button type="primary">新增</el-button>
+      <el-button type="primary" @click="add">新增</el-button>
       <el-button type="primary">导入</el-button>
       <el-button type="primary">导出</el-button>
     </div>
@@ -18,14 +18,26 @@
         stripe
         style="width: 100%">
       <el-table-column
-          prop="date"
-          label="日期"
+          prop="id"
+          label="ID"
           sortable
       >
       </el-table-column>
       <el-table-column
-          prop="name"
-          label="姓名">
+          prop="username"
+          label="用户名">
+      </el-table-column>
+      <el-table-column
+          prop="nickName"
+          label="昵称">
+      </el-table-column>
+      <el-table-column
+          prop="age"
+          label="年龄">
+      </el-table-column>
+      <el-table-column
+          prop="sex"
+          label="性别">
       </el-table-column>
       <el-table-column
           prop="address"
@@ -53,6 +65,35 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
       </el-pagination>
+
+      <el-dialog title="提示" v-model="dialogVisible" width="30%">
+        <el-form :model="form" label-width="120px">
+          <el-form-item label="用户名">
+            <el-input v-model="form.username" style="width: 80%"></el-input>
+          </el-form-item>
+          <el-form-item label="昵称">
+            <el-input v-model="form.nickName" style="width: 80%"></el-input>
+          </el-form-item>
+          <el-form-item label="年龄">
+            <el-input v-model="form.age" style="width: 80%"></el-input>
+          </el-form-item>
+          <el-form-item label="性别">
+            <el-radio v-model="form.sex" label="男">男</el-radio>
+            <el-radio v-model="form.sex" label="女">女</el-radio>
+            <el-radio v-model="form.sex" label="未知">未知</el-radio>
+          </el-form-item>
+          <el-form-item label="地址">
+            <el-input type="textarea" v-model="form.address" style="width: 80%"></el-input>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="save">确 定</el-button>
+          </span>
+        </template>
+      </el-dialog>
+
     </div>
   </div>
 </template>
@@ -67,31 +108,24 @@ export default {
   },
   data() {
     return {
+      form: {},
+      dialogVisible: false,
       search: '',
       currentPage: 1,
       total: 10,
       tableData: [
-        {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }
+
       ]
     }
   },
   methods: {
+    add() {
+      this.dialogVisible = true
+      this.form = {}
+    },
+    save() {
+
+    },
     handleEdit() {
 
     },
