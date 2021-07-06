@@ -35,6 +35,9 @@ export default {
       }
     }
   },
+  created() {
+    sessionStorage.removeItem("user")
+  },
   methods: {
     login() {
       this.$refs['form'].validate((valid) => {
@@ -45,6 +48,7 @@ export default {
                 type: "success",
                 message: "登录成功"
               })
+              sessionStorage.setItem("user", JSON.stringify(res.data))  // 缓存用户信息
               this.$router.push("/")  //登录成功之后进行页面的跳转，跳转到主页
             } else {
               this.$message({

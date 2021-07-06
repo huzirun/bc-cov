@@ -9,7 +9,7 @@
         <template #title>系统管理</template>
         <el-menu-item index="user" :route="{path: '/'}">用户管理</el-menu-item>
       </el-submenu>
-      <el-menu-item index="data" :route="{path: '/'}">数据管理</el-menu-item>
+<!--      <el-menu-item index="data" :route="{path: '/'}">数据管理</el-menu-item>-->
     </el-menu>
   </div>
 </template>

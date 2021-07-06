@@ -24,7 +24,7 @@ public class UserController {
         if (res == null) {
             return Result.error("-1", "用户名或密码错误");
         }
-        return Result.success();
+        return Result.success(res);
     }
 
     @PostMapping("/register")
@@ -59,6 +59,11 @@ public class UserController {
     public Result<?> update(@PathVariable Long id) {
         userMapper.deleteById(id);
         return Result.success();
+    }
+
+    @GetMapping("/{id}")
+    public Result<?> getById(@PathVariable Long id) {
+        return Result.success(userMapper.selectById(id));
     }
 
     @GetMapping
