@@ -42,7 +42,7 @@ export default {
     login() {
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          request.post("/api/user/login", this.form).then(res => {
+          request.post("/user/login", this.form).then(res => {
             if (res.code === '0') {
               this.$message({
                 type: "success",

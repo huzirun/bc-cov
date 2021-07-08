@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     update() {
-      request.put("/api/user", this.form).then(res => {
+      request.put("/user", this.form).then(res => {
         console.log(res)
         if (res.code === '0') {
           this.$message({

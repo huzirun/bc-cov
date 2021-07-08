@@ -1,11 +1,11 @@
 <template>
   <div style="padding: 10px">
-<!--    功能区域-->
+    <!--    功能区域-->
     <div style="margin: 10px 0">
       <el-button type="primary" @click="add">新增</el-button>
     </div>
 
-<!--    搜索区域-->
+    <!--    搜索区域-->
     <div style="margin: 10px 0">
       <el-input v-model="search" placeholder="请输入关键字" style="width: 20%" clearable></el-input>
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
@@ -22,24 +22,20 @@
       >
       </el-table-column>
       <el-table-column
-          prop="username"
-          label="用户名">
+          prop="name"
+          label="名称">
       </el-table-column>
       <el-table-column
-          prop="nickName"
-          label="昵称">
+          prop="price"
+          label="单价">
       </el-table-column>
       <el-table-column
-          prop="age"
-          label="年龄">
+          prop="author"
+          label="作者">
       </el-table-column>
       <el-table-column
-          prop="sex"
-          label="性别">
-      </el-table-column>
-      <el-table-column
-          prop="address"
-          label="地址">
+          prop="createTime"
+          label="出版时间">
       </el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
@@ -66,22 +62,17 @@
 
       <el-dialog title="提示" v-model="dialogVisible" width="30%">
         <el-form :model="form" label-width="120px">
-          <el-form-item label="用户名">
-            <el-input v-model="form.username" style="width: 80%"></el-input>
+          <el-form-item label="名称">
+            <el-input v-model="form.name" style="width: 80%"></el-input>
           </el-form-item>
-          <el-form-item label="昵称">
-            <el-input v-model="form.nickName" style="width: 80%"></el-input>
+          <el-form-item label="价格">
+            <el-input v-model="form.price" style="width: 80%"></el-input>
           </el-form-item>
-          <el-form-item label="年龄">
-            <el-input v-model="form.age" style="width: 80%"></el-input>
+          <el-form-item label="作者">
+            <el-input v-model="form.author" style="width: 80%"></el-input>
           </el-form-item>
-          <el-form-item label="性别">
-            <el-radio v-model="form.sex" label="男">男</el-radio>
-            <el-radio v-model="form.sex" label="女">女</el-radio>
-            <el-radio v-model="form.sex" label="未知">未知</el-radio>
-          </el-form-item>
-          <el-form-item label="地址">
-            <el-input type="textarea" v-model="form.address" style="width: 80%"></el-input>
+          <el-form-item label="出版时间">
+            <el-date-picker v-model="form.createTime" value-format="YYYY-MM-DD" type="date" style="width: 80%" clearable></el-date-picker>
           </el-form-item>
         </el-form>
         <template #footer>
@@ -102,7 +93,7 @@
 import request from "@/utils/request";
 
 export default {
-  name: 'Home',
+  name: 'Book',
   components: {
 
   },
@@ -122,7 +113,7 @@ export default {
   },
   methods: {
     load() {
-      request.get("/api/user", {
+      request.get("/book", {
         params: {
           pageNum: this.currentPage,
           pageSize: this.pageSize,
@@ -140,7 +131,7 @@ export default {
     },
     save() {
       if (this.form.id) {  // 更新
-        request.put("/api/user", this.form).then(res => {
+        request.put("/book", this.form).then(res => {
           console.log(res)
           if (res.code === '0') {
             this.$message({
@@ -157,7 +148,7 @@ export default {
           this.dialogVisible = false  // 关闭弹窗
         })
       }  else {  // 新增
-        request.post("/api/user", this.form).then(res => {
+        request.post("/book", this.form).then(res => {
           console.log(res)
           if (res.code === '0') {
             this.$message({
@@ -183,7 +174,7 @@ export default {
     },
     handleDelete(id) {
       console.log(id)
-      request.delete("/api/user/" + id).then(res => {
+      request.delete("/book/" + id).then(res => {
         if (res.code === '0') {
           this.$message({
             type: "success",

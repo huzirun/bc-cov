@@ -54,7 +54,7 @@ export default {
 
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          request.post("/api/user/register", this.form).then(res => {
+          request.post("/user/register", this.form).then(res => {
             if (res.code === '0') {
               this.$message({
                 type: "success",
