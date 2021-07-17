@@ -22,33 +22,20 @@
       >
       </el-table-column>
       <el-table-column
-          prop="name"
-          label="名称">
-      </el-table-column>
-      <el-table-column
-          prop="price"
-          label="单价">
+          prop="title"
+          label="标题">
       </el-table-column>
       <el-table-column
           prop="author"
           label="作者">
       </el-table-column>
       <el-table-column
-          prop="createTime"
-          label="出版时间">
-      </el-table-column>
-      <el-table-column
-          label="封面">
-        <template #default="scope">
-          <el-image
-              style="width: 100px; height: 100px"
-              :src="scope.row.cover"
-              :preview-src-list="[scope.row.cover]">
-          </el-image>
-        </template>
+          prop="time"
+          label="时间">
       </el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
+          <el-button size="mini" @click="details(scope.row)">详情</el-button>
           <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
           <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.row.id)">
             <template #reference>
@@ -69,46 +56,45 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
       </el-pagination>
+    </div>
 
-      <el-dialog title="提示" v-model="dialogVisible" width="30%">
-        <el-form :model="form" label-width="120px">
-          <el-form-item label="名称">
-            <el-input v-model="form.name" style="width: 80%"></el-input>
-          </el-form-item>
-          <el-form-item label="价格">
-            <el-input v-model="form.price" style="width: 80%"></el-input>
-          </el-form-item>
-          <el-form-item label="作者">
-            <el-input v-model="form.author" style="width: 80%"></el-input>
-          </el-form-item>
-          <el-form-item label="出版时间">
-            <el-date-picker v-model="form.createTime" value-format="YYYY-MM-DD" type="date" style="width: 80%" clearable></el-date-picker>
-          </el-form-item>
-          <el-form-item label="封面">
-            <el-upload ref="upload" action="http://localhost:9090/files/upload" :on-success="filesUploadSuccess">
-              <el-button type="primary">点击上传</el-button>
-            </el-upload>
-          </el-form-item>
-        </el-form>
-        <template #footer>
+    <el-dialog title="提示" v-model="dialogVisible" width="50%">
+      <el-form :model="form" label-width="120px">
+        <el-form-item label="标题">
+          <el-input v-model="form.title" style="width: 50%"></el-input>
+        </el-form-item>
+
+        <div id="div1"></div>
+<!--        <el-form-item label="内容">-->
+<!--          <el-input v-model="form.price" style="width: 80%"></el-input>-->
+<!--        </el-form-item>-->
+      </el-form>
+      <template #footer>
           <span class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
             <el-button type="primary" @click="save">确 定</el-button>
           </span>
-        </template>
-      </el-dialog>
+      </template>
+    </el-dialog>
 
-    </div>
+    <el-dialog title="详情" v-model="vis" width="50%">
+      <el-card>
+        <div v-html="detail.content" style="min-height: 100px"></div>
+      </el-card>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 
-
+import E from 'wangeditor'
 import request from "@/utils/request";
 
+let editor;
+
 export default {
-  name: 'Book',
+  name: 'News',
   components: {
 
   },
@@ -120,19 +106,25 @@ export default {
       currentPage: 1,
       pageSize: 10,
       total: 0,
-      tableData: []
+      tableData: [],
+      vis: false,
+      detail: {}
     }
   },
   created() {
     this.load()
   },
   methods: {
+    details(row) {
+      this.detail = row
+      this.vis = true
+    },
     filesUploadSuccess(res) {
       console.log(res)
       this.form.cover = res.data
     },
     load() {
-      request.get("/book", {
+      request.get("/news", {
         params: {
           pageNum: this.currentPage,
           pageSize: this.pageSize,
@@ -147,13 +139,23 @@ export default {
     add() {
       this.dialogVisible = true
       this.form = {}
-      if (this.$refs['upload']) {
-        this.$refs['upload'].clearFiles()  // 清除历史文件列表
-      }
+
+      this.$nextTick(() => {
+        // 关联弹窗里面的div，new一个 editor对象
+        editor = new E('#div1')
+
+        // 配置 server 接口地址
+        editor.config.uploadImgServer = 'http://localhost:9090/files/editor/upload'
+        editor.config.uploadFileName = "file"  // 设置上传参数名称
+        editor.create()
+      })
+
     },
     save() {
+      this.form.content = editor.txt.html()  // 获取 编辑器里面的值，然后赋予到实体当中
+
       if (this.form.id) {  // 更新
-        request.put("/book", this.form).then(res => {
+        request.put("/news", this.form).then(res => {
           console.log(res)
           if (res.code === '0') {
             this.$message({
@@ -170,7 +172,11 @@ export default {
           this.dialogVisible = false  // 关闭弹窗
         })
       }  else {  // 新增
-        request.post("/book", this.form).then(res => {
+        let userStr = sessionStorage.getItem("user") || "{}"
+        let user = JSON.parse(userStr)
+        this.form.author = user.nickName
+
+        request.post("/news", this.form).then(res => {
           console.log(res)
           if (res.code === '0') {
             this.$message({
@@ -193,16 +199,22 @@ export default {
     handleEdit(row) {
       this.form = JSON.parse(JSON.stringify(row))
       this.dialogVisible = true
-      this.$nextTick(() => {
-        if (this.$refs['upload']) {
-          this.$refs['upload'].clearFiles()  // 清除历史文件列表
-        }
-      })
 
+      this.$nextTick(() => {
+        // 关联弹窗里面的div，new一个 editor对象
+        editor = new E('#div1')
+        editor.create()
+
+        // 配置 server 接口地址
+        editor.config.uploadImgServer = 'http://localhost:9090/files/editor/upload'
+        editor.config.uploadFileName = "file"  // 设置上传参数名称
+
+        editor.txt.html(row.content)
+      })
     },
     handleDelete(id) {
       console.log(id)
-      request.delete("/book/" + id).then(res => {
+      request.delete("/news/" + id).then(res => {
         if (res.code === '0') {
           this.$message({
             type: "success",
