@@ -140,14 +140,17 @@ export default {
       this.dialogVisible = true
       this.form = {}
 
+
       this.$nextTick(() => {
         // 关联弹窗里面的div，new一个 editor对象
-        editor = new E('#div1')
+        if (!editor) {
+          editor = new E('#div1')
 
-        // 配置 server 接口地址
-        editor.config.uploadImgServer = 'http://localhost:9090/files/editor/upload'
-        editor.config.uploadFileName = "file"  // 设置上传参数名称
-        editor.create()
+          // 配置 server 接口地址
+          editor.config.uploadImgServer = 'http://localhost:9090/files/editor/upload'
+          editor.config.uploadFileName = "file"  // 设置上传参数名称
+          editor.create()
+        }
       })
 
     },
@@ -202,11 +205,14 @@ export default {
 
       this.$nextTick(() => {
         // 关联弹窗里面的div，new一个 editor对象
+        // 关联弹窗里面的div，new一个 editor对象
         if (!editor) {
-          editor.create()
+          editor = new E('#div1')
+
           // 配置 server 接口地址
           editor.config.uploadImgServer = 'http://localhost:9090/files/editor/upload'
           editor.config.uploadFileName = "file"  // 设置上传参数名称
+          editor.create()
         }
 
         editor.txt.html(row.content)
