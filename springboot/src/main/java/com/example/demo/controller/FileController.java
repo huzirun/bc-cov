@@ -52,7 +52,7 @@ public class FileController {
         String originalFilename = file.getOriginalFilename();  // 获取源文件的名称
         // 定义文件的唯一标识（前缀）
         String flag = IdUtil.fastSimpleUUID();
-        String rootFilePath = System.getProperty("user.dir") + "/springboot/src/main/resources/files/" + flag + "_" + originalFilename;  // 获取上传的路径
+        String rootFilePath = System.getProperty("user.dir") + "/files/" + flag + "_" + originalFilename;  // 获取上传的路径
         FileUtil.writeBytes(file.getBytes(), rootFilePath);  // 把文件写入到上传的路径
         String url = ip + ":" + port + "/files/" + flag;
         JSONObject json = new JSONObject();
