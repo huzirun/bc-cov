@@ -202,12 +202,12 @@ export default {
 
       this.$nextTick(() => {
         // 关联弹窗里面的div，new一个 editor对象
-        editor = new E('#div1')
-        editor.create()
-
-        // 配置 server 接口地址
-        editor.config.uploadImgServer = 'http://localhost:9090/files/editor/upload'
-        editor.config.uploadFileName = "file"  // 设置上传参数名称
+        if (!editor) {
+          editor.create()
+          // 配置 server 接口地址
+          editor.config.uploadImgServer = 'http://localhost:9090/files/editor/upload'
+          editor.config.uploadFileName = "file"  // 设置上传参数名称
+        }
 
         editor.txt.html(row.content)
       })
