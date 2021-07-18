@@ -37,6 +37,7 @@ public class UserController {
         if (user.getPassword() == null) {
             user.setPassword("123456");
         }
+        user.setRole(2);
         userMapper.insert(user);
         return Result.success();
     }
