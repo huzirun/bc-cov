@@ -10,6 +10,10 @@
           <el-input prefix-icon="el-icon-lock" v-model="form.password" show-password></el-input>
         </el-form-item>
         <el-form-item>
+          <el-radio v-model="form.role" :label="1" style="color: #eee">管理员</el-radio>
+          <el-radio v-model="form.role" :label="2" style="color: #eee">普通用户</el-radio>
+        </el-form-item>
+        <el-form-item>
           <el-button style="width: 100%" type="primary" @click="login">登 录</el-button>
         </el-form-item>
       </el-form>
@@ -24,7 +28,7 @@ export default {
   name: "Login",
   data() {
     return {
-      form: {},
+      form: {role: 1},
       rules: {
         username: [
           {required: true, message: '请输入用户名', trigger: 'blur'},
