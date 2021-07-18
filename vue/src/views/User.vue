@@ -1,5 +1,6 @@
 <template>
   <div style="padding: 10px">
+
 <!--    功能区域-->
     <div style="margin: 10px 0">
       <el-button type="primary" @click="add">新增</el-button>
@@ -11,6 +12,7 @@
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
     </div>
     <el-table
+        v-loading="loading"
         :data="tableData"
         border
         stripe
@@ -40,6 +42,13 @@
       <el-table-column
           prop="address"
           label="地址">
+      </el-table-column>
+      <el-table-column
+          label="角色">
+        <template #default="scope">
+          <span v-if="scope.row.role === 1">管理员</span>
+          <span v-if="scope.row.role === 2">普通用户</span>
+        </template>
       </el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
@@ -108,6 +117,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       form: {},
       dialogVisible: false,
       search: '',
@@ -122,6 +132,7 @@ export default {
   },
   methods: {
     load() {
+      this.loading = true
       request.get("/user", {
         params: {
           pageNum: this.currentPage,
@@ -129,7 +140,7 @@ export default {
           search: this.search
         }
       }).then(res => {
-        console.log(res)
+        this.loading = false
         this.tableData = res.data.records
         this.total = res.data.total
       })

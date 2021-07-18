@@ -11,6 +11,7 @@
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
     </div>
     <el-table
+        v-loading="loading"
         :data="tableData"
         border
         stripe
@@ -100,6 +101,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       form: {},
       dialogVisible: false,
       search: '',
@@ -124,6 +126,7 @@ export default {
       this.form.cover = res.data
     },
     load() {
+      this.loading = true
       request.get("/news", {
         params: {
           pageNum: this.currentPage,
@@ -131,7 +134,7 @@ export default {
           search: this.search
         }
       }).then(res => {
-        console.log(res)
+        this.loading = false
         this.tableData = res.data.records
         this.total = res.data.total
       })

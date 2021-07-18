@@ -2,7 +2,7 @@
   <div style="padding: 10px">
     <!--    功能区域-->
     <div style="margin: 10px 0">
-      <el-button type="primary" @click="add">新增</el-button>
+      <el-button type="primary" @click="add" v-if="user.role === 1">新增</el-button>
     </div>
 
     <!--    搜索区域-->
@@ -11,6 +11,7 @@
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
     </div>
     <el-table
+        v-loading="loading"
         :data="tableData"
         border
         stripe
@@ -49,8 +50,8 @@
       </el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-          <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.row.id)">
+          <el-button size="mini" @click="handleEdit(scope.row)" v-if="user.role === 1">编辑</el-button>
+          <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.row.id)" v-if="user.role === 1">
             <template #reference>
               <el-button size="mini" type="danger">删除</el-button>
             </template>
@@ -114,6 +115,8 @@ export default {
   },
   data() {
     return {
+      user: {},
+      loading: true,
       form: {},
       dialogVisible: false,
       search: '',
@@ -124,6 +127,15 @@ export default {
     }
   },
   created() {
+    let userStr = sessionStorage.getItem("user") || "{}"
+    this.user = JSON.parse(userStr)
+    // 请求服务端，确认当前登录用户的 合法信息
+    request.get("/user/" + this.user.id).then(res => {
+      if (res.code === '0') {
+        this.user = res.data
+      }
+    })
+
     this.load()
   },
   methods: {
@@ -132,6 +144,7 @@ export default {
       this.form.cover = res.data
     },
     load() {
+      this.loading = true
       request.get("/book", {
         params: {
           pageNum: this.currentPage,
@@ -139,7 +152,7 @@ export default {
           search: this.search
         }
       }).then(res => {
-        console.log(res)
+        this.loading = false
         this.tableData = res.data.records
         this.total = res.data.total
       })
