@@ -69,6 +69,11 @@ public class UserController {
     }
 
     @GetMapping
+    public Result<?> findAll() {
+        return Result.success(userMapper.selectList(null));
+    }
+
+    @GetMapping
     public Result<?> findPage(@RequestParam(defaultValue = "1") Integer pageNum,
                               @RequestParam(defaultValue = "10") Integer pageSize,
                               @RequestParam(defaultValue = "") String search) {

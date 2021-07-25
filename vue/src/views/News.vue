@@ -66,9 +66,9 @@
         </el-form-item>
 
         <div id="div1"></div>
-<!--        <el-form-item label="内容">-->
-<!--          <el-input v-model="form.price" style="width: 80%"></el-input>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item label="内容">-->
+        <!--          <el-input v-model="form.price" style="width: 80%"></el-input>-->
+        <!--        </el-form-item>-->
       </el-form>
       <template #footer>
           <span class="dialog-footer">
@@ -96,9 +96,7 @@ let editor;
 
 export default {
   name: 'News',
-  components: {
-
-  },
+  components: {},
   data() {
     return {
       loading: true,
@@ -110,7 +108,7 @@ export default {
       total: 0,
       tableData: [],
       vis: false,
-      detail: {}
+      detail: {},
     }
   },
   created() {
@@ -150,7 +148,7 @@ export default {
           editor = new E('#div1')
 
           // 配置 server 接口地址
-          editor.config.uploadImgServer = 'http://localhost:9090/files/editor/upload'
+          editor.config.uploadImgServer = 'http://' + window.server.filesUploadUrl + ':9090/files/editor/upload'
           editor.config.uploadFileName = "file"  // 设置上传参数名称
           editor.create()
         }
@@ -177,7 +175,7 @@ export default {
           this.load() // 刷新表格的数据
           this.dialogVisible = false  // 关闭弹窗
         })
-      }  else {  // 新增
+      } else {  // 新增
         let userStr = sessionStorage.getItem("user") || "{}"
         let user = JSON.parse(userStr)
         this.form.author = user.nickName
