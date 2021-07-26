@@ -68,7 +68,7 @@ public class UserController {
         return Result.success(userMapper.selectById(id));
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public Result<?> findAll() {
         return Result.success(userMapper.selectList(null));
     }
