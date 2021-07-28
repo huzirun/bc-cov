@@ -57,7 +57,15 @@ let limitPagePath = ['/about']
 
 router.beforeEach((to, from, next) => {
     if (limitPagePath.includes(to.path)) {
-        next({path: "/login"})
+        // 判断sessionStorage是否保存了用户信息
+        let userStr = sessionStorage.getItem("user") || "{}"
+        let user = JSON.parse(userStr)
+        if (!user.id) {
+            // 跳转到登录页面
+            next({path: "/login"})
+        } else {
+            next()
+        }
     } else {
         next()
     }
