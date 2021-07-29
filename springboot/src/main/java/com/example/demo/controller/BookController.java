@@ -16,29 +16,39 @@ import javax.annotation.Resource;
 public class BookController {
 
     @Resource
-    BookMapper BookMapper;
+    BookMapper bookMapper;
 
     @PostMapping
     public Result<?> save(@RequestBody Book Book) {
-        BookMapper.insert(Book);
+        bookMapper.insert(Book);
         return Result.success();
     }
 
     @PutMapping
     public Result<?> update(@RequestBody Book Book) {
-        BookMapper.updateById(Book);
+        bookMapper.updateById(Book);
         return Result.success();
     }
 
     @DeleteMapping("/{id}")
-    public Result<?> update(@PathVariable Long id) {
-        BookMapper.deleteById(id);
+    public Result<?> update(@PathVariable Integer id) {
+        bookMapper.deleteById(id);
         return Result.success();
     }
 
     @GetMapping("/{id}")
-    public Result<?> getById(@PathVariable Long id) {
-        return Result.success(BookMapper.selectById(id));
+    public Result<?> getById(@PathVariable Integer id) {
+        return Result.success(bookMapper.selectById(id));
+    }
+
+    /**
+     * 注意：这个方法使用的是Mybatis sql的方式做的多表联合查询，大家可以点开，参考下怎么写多表查询
+     * @param userId
+     * @return
+     */
+    @GetMapping("/{userId}")
+    public Result<?> getByUserId(@PathVariable Integer userId) {
+        return Result.success(bookMapper.findByUserId(userId));
     }
 
     @GetMapping
@@ -49,7 +59,7 @@ public class BookController {
         if (StrUtil.isNotBlank(search)) {
             wrapper.like(Book::getName, search);
         }
-        Page<Book> BookPage = BookMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
+        Page<Book> BookPage = bookMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
         return Result.success(BookPage);
     }
 }
