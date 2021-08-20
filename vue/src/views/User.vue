@@ -1,12 +1,23 @@
 <template>
   <div style="padding: 10px">
 
-<!--    功能区域-->
+    <!--    功能区域-->
     <div style="margin: 10px 0">
       <el-button type="primary" @click="add">新增</el-button>
+      <el-upload
+        action="http://localhost:9090/user/import"
+        :on-success="handleUploadSuccess"
+        :show-file-list=false
+        :limit="1"
+        accept='.xlsx'
+        style="display: inline-block; margin: 0 10px"
+      >
+        <el-button type="primary">导入</el-button>
+      </el-upload>
+      <el-button type="primary" @click="exportUser">导出</el-button>
     </div>
 
-<!--    搜索区域-->
+    <!--    搜索区域-->
     <div style="margin: 10px 0">
       <el-input v-model="search" placeholder="请输入关键字" style="width: 20%" clearable></el-input>
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
@@ -112,9 +123,7 @@ import request from "@/utils/request";
 
 export default {
   name: 'Home',
-  components: {
-
-  },
+  components: {},
   data() {
     return {
       loading: true,
@@ -124,7 +133,7 @@ export default {
       currentPage: 1,
       pageSize: 10,
       total: 0,
-      tableData: []
+      tableData: [],
     }
   },
   created() {
@@ -144,6 +153,15 @@ export default {
         this.tableData = res.data.records
         this.total = res.data.total
       })
+    },
+    handleUploadSuccess(res) {
+      if (res.code === "0") {
+        this.$message.success("导入成功")
+        this.load()
+      }
+    },
+    exportUser() {
+      location.href = "http://" + window.server.filesUploadUrl + ":9090/user/export";
     },
     add() {
       this.dialogVisible = true
@@ -167,7 +185,7 @@ export default {
           this.load() // 刷新表格的数据
           this.dialogVisible = false  // 关闭弹窗
         })
-      }  else {  // 新增
+      } else {  // 新增
         request.post("/user", this.form).then(res => {
           console.log(res)
           if (res.code === '0') {
