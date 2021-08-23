@@ -4,10 +4,16 @@
       <div style="font-size: 30px; text-align: center; padding: 30px 0">欢迎登录</div>
       <el-form ref="form" :model="form" size="normal" :rules="rules">
         <el-form-item prop="username">
-          <el-input prefix-icon="el-icon-user-solid" v-model="form.username"></el-input>
+          <el-input prefix-icon="el-icon-user-solid" v-model="form.username" placeholder="请输入账号"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input prefix-icon="el-icon-lock" v-model="form.password" show-password></el-input>
+          <el-input prefix-icon="el-icon-lock" v-model="form.password" show-password placeholder="请输入密码"></el-input>
+        </el-form-item>
+        <el-form-item>
+         <div style="display: flex">
+           <el-input prefix-icon="el-icon-key" v-model="form.validCode" style="width: 50%;" placeholder="请输入验证码"></el-input>
+           <ValidCode @input="createValidCode" />
+         </div>
         </el-form-item>
         <el-form-item>
           <el-radio v-model="form.role" :label="1">管理员</el-radio>
@@ -23,9 +29,13 @@
 
 <script>
 import request from "@/utils/request";
+import ValidCode from "@/components/ValidCode";
 
 export default {
   name: "Login",
+  components: {
+    ValidCode
+  },
   data() {
     return {
       form: {role: 1},
@@ -37,6 +47,7 @@ export default {
           {required: true, message: '请输入密码', trigger: 'blur'},
         ],
       },
+      validCode: ''
       // 加背景图片
       // bg: {
       //   backgroundImage: "url(" + require("@/assets/bg.jpg") + ")",
@@ -49,9 +60,20 @@ export default {
     sessionStorage.removeItem("user")
   },
   methods: {
+    createValidCode(data) {
+      this.validCode = data
+    },
     login() {
       this.$refs['form'].validate((valid) => {
         if (valid) {
+          if (!this.form.validCode) {
+            this.$message.error("请填写验证码")
+            return
+          }
+          if(this.form.validCode.toLowerCase() !== this.validCode.toLowerCase()) {
+            this.$message.error("验证码错误")
+            return
+          }
           request.post("/user/login", this.form).then(res => {
             if (res.code === '0') {
               this.$message({
@@ -75,5 +97,13 @@ export default {
 </script>
 
 <style scoped>
-
+.ValidCode{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+span{
+  display: inline-block;
+}
+}
 </style>
