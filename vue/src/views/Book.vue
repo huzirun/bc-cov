@@ -3,6 +3,15 @@
     <!--    功能区域-->
     <div style="margin: 10px 0">
       <el-button type="primary" @click="add" v-if="user.role === 1">新增</el-button>
+      <el-popconfirm
+          title="确定删除吗？"
+          @confirm="deleteBatch"
+      >
+        <template #reference>
+          <el-button type="danger" v-if="user.role === 1">批量删除</el-button>
+        </template>
+      </el-popconfirm>
+
     </div>
 
     <!--    搜索区域-->
@@ -15,7 +24,13 @@
         :data="tableData"
         border
         stripe
-        style="width: 100%">
+        style="width: 100%"
+        @selection-change="handleSelectionChange"
+    >
+      <el-table-column
+          type="selection"
+          width="55">
+      </el-table-column>
       <el-table-column
           prop="id"
           label="ID"
@@ -124,7 +139,8 @@ export default {
       pageSize: 10,
       total: 0,
       tableData: [],
-      filesUploadUrl: "http://" + window.server.filesUploadUrl + ":9090/files/upload"
+      filesUploadUrl: "http://" + window.server.filesUploadUrl + ":9090/files/upload",
+      ids: []
     }
   },
   created() {
@@ -140,6 +156,23 @@ export default {
     this.load()
   },
   methods: {
+    deleteBatch() {
+      if (!this.ids.length) {
+        this.$message.warning("请选择数据！")
+        return
+      }
+      request.post("/book/deleteBatch", this.ids).then(res => {
+        if (res.code === '0') {
+          this.$message.success("批量删除成功")
+          this.load()
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
+    handleSelectionChange(val) {
+      this.ids = val.map(v => v.id)
+    },
     filesUploadSuccess(res) {
       console.log(res)
       this.form.cover = res.data
@@ -202,7 +235,6 @@ export default {
           this.dialogVisible = false  // 关闭弹窗
         })
       }
-
     },
     handleEdit(row) {
       this.form = JSON.parse(JSON.stringify(row))

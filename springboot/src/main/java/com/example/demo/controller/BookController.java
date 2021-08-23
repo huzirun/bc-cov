@@ -10,6 +10,7 @@ import com.example.demo.mapper.BookMapper;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/book")
@@ -31,8 +32,14 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    public Result<?> update(@PathVariable Integer id) {
+    public Result<?> delete(@PathVariable Integer id) {
         bookMapper.deleteById(id);
+        return Result.success();
+    }
+
+    @PostMapping("/deleteBatch")
+    public Result<?> deleteBatch(@RequestBody List<Integer> ids) {
+        bookMapper.deleteBatchIds(ids);
         return Result.success();
     }
 
