@@ -61,9 +61,10 @@
           <span v-if="scope.row.role === 2">普通用户</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="260">
         <template #default="scope">
-          <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+          <el-button size="mini" type="success" plain @click="showBooks(scope.row.bookList)">查看图书列表</el-button>
+          <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">编辑</el-button>
           <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.row.id)">
             <template #reference>
               <el-button size="mini" type="danger">删除</el-button>
@@ -83,36 +84,45 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
       </el-pagination>
+    </div>
 
-      <el-dialog title="提示" v-model="dialogVisible" width="30%">
-        <el-form :model="form" label-width="120px">
-          <el-form-item label="用户名">
-            <el-input v-model="form.username" style="width: 80%"></el-input>
-          </el-form-item>
-          <el-form-item label="昵称">
-            <el-input v-model="form.nickName" style="width: 80%"></el-input>
-          </el-form-item>
-          <el-form-item label="年龄">
-            <el-input v-model="form.age" style="width: 80%"></el-input>
-          </el-form-item>
-          <el-form-item label="性别">
-            <el-radio v-model="form.sex" label="男">男</el-radio>
-            <el-radio v-model="form.sex" label="女">女</el-radio>
-            <el-radio v-model="form.sex" label="未知">未知</el-radio>
-          </el-form-item>
-          <el-form-item label="地址">
-            <el-input type="textarea" v-model="form.address" style="width: 80%"></el-input>
-          </el-form-item>
-        </el-form>
-        <template #footer>
+
+    <el-dialog title="用户拥有的图书列表" v-model="bookVis" width="30%">
+      <el-table :data="bookList" stripe border>
+        <el-table-column prop="id" label="ID"></el-table-column>
+        <el-table-column prop="name" label="名称"></el-table-column>
+        <el-table-column prop="price" label="价格"></el-table-column>
+      </el-table>
+    </el-dialog>
+
+    <el-dialog title="提示" v-model="dialogVisible" width="30%">
+      <el-form :model="form" label-width="120px">
+        <el-form-item label="用户名">
+          <el-input v-model="form.username" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="昵称">
+          <el-input v-model="form.nickName" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="年龄">
+          <el-input v-model="form.age" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="性别">
+          <el-radio v-model="form.sex" label="男">男</el-radio>
+          <el-radio v-model="form.sex" label="女">女</el-radio>
+          <el-radio v-model="form.sex" label="未知">未知</el-radio>
+        </el-form-item>
+        <el-form-item label="地址">
+          <el-input type="textarea" v-model="form.address" style="width: 80%"></el-input>
+        </el-form-item>
+      </el-form>
+      <template #footer>
           <span class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
             <el-button type="primary" @click="save">确 定</el-button>
           </span>
-        </template>
-      </el-dialog>
+      </template>
+    </el-dialog>
 
-    </div>
   </div>
 </template>
 
@@ -129,17 +139,23 @@ export default {
       loading: true,
       form: {},
       dialogVisible: false,
+      bookVis: false,
       search: '',
       currentPage: 1,
       pageSize: 10,
       total: 0,
       tableData: [],
+      bookList: []
     }
   },
   created() {
     this.load()
   },
   methods: {
+    showBooks(books) {
+      this.bookList = books
+      this.bookVis = true
+    },
     load() {
       this.loading = true
       request.get("/user", {
