@@ -60,6 +60,7 @@ export default {
     sessionStorage.removeItem("user")
   },
   methods: {
+    // 接收验证码组件提交的 4位验证码
     createValidCode(data) {
       this.validCode = data
     },
@@ -97,13 +98,5 @@ export default {
 </script>
 
 <style scoped>
-.ValidCode{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-span{
-  display: inline-block;
-}
-}
+
 </style>

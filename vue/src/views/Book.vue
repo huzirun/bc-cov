@@ -171,7 +171,7 @@ export default {
       })
     },
     handleSelectionChange(val) {
-      this.ids = val.map(v => v.id)
+      this.ids = val.map(v => v.id)   // [{id,name}, {id,name}] => [id,id]
     },
     filesUploadSuccess(res) {
       console.log(res)
