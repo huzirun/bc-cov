@@ -21,6 +21,6 @@
 
     <select id="findPage" resultMap="userMap">
         SELECT `user`.* ,book.id as b_id, book.name b_name,book.price b_price from `user`
-        left join book on user.id = book.user_id
+        left join book on user.id = book.user_id where `user`.nick_name like concat('%', #{nickName}, '%')
     </select>
 </mapper>
