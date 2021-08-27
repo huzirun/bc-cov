@@ -4,11 +4,12 @@
     <div style="margin: 10px 0">
       <el-button type="primary" @click="add" v-if="user.role === 1">新增</el-button>
       <el-popconfirm
+          v-if="user.role === 1"
           title="确定删除吗？"
           @confirm="deleteBatch"
       >
         <template #reference>
-          <el-button type="danger" v-if="user.role === 1">批量删除</el-button>
+          <el-button type="danger" >批量删除</el-button>
         </template>
       </el-popconfirm>
 
