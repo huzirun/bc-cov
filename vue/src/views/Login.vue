@@ -22,6 +22,7 @@
         <el-form-item>
           <el-button style="width: 100%" type="primary" @click="login">登 录</el-button>
         </el-form-item>
+        <el-form-item><el-button type="text" @click="$router.push('/register')">前往注册 >> </el-button></el-form-item>
       </el-form>
     </div>
   </div>
