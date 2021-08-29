@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 24/08/2021 09:36:52
+ Date: 29/08/2021 15:28:57
 */
 
 SET NAMES utf8mb4;
@@ -30,13 +30,12 @@ CREATE TABLE `book`  (
   `cover` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '封面地址',
   `user_id` int(11) NULL DEFAULT NULL COMMENT '用户id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of book
 -- ----------------------------
 INSERT INTO `book` VALUES (1, '明朝那些事', 60.00, 'xxx', '2010-07-01 00:00:00', 'http://localhost:9090/files/eb7942935c294ca1bc2a07d24b554d36', 13);
-INSERT INTO `book` VALUES (5, '33', 3.00, '3', '2021-08-25 00:00:00', NULL, 13);
 
 -- ----------------------------
 -- Table structure for category
@@ -57,7 +56,6 @@ INSERT INTO `category` VALUES (2, '童书', 1);
 INSERT INTO `category` VALUES (3, '社会科学', 1);
 INSERT INTO `category` VALUES (4, '经济学', 1);
 INSERT INTO `category` VALUES (5, '科普百科', 2);
-INSERT INTO `category` VALUES (6, '幼儿启蒙', 2);
 INSERT INTO `category` VALUES (7, '法律', 3);
 
 -- ----------------------------
@@ -93,12 +91,15 @@ CREATE TABLE `user`  (
   `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '地址',
   `role` int(11) NULL DEFAULT NULL COMMENT '角色，1：管理员，2：普通用户',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
 INSERT INTO `user` VALUES (1, 'admin', 'admin', '管理员', 32, '男', '火星', 1);
 INSERT INTO `user` VALUES (13, 'zhang', '123', '张三', 20, '男', '木星', 2);
+INSERT INTO `user` VALUES (14, 'wang', '123', '王梦晨', 24, '女', '地球', 2);
+INSERT INTO `user` VALUES (15, 'li', '123', '李雪', 22, '女', '银河系', 2);
+INSERT INTO `user` VALUES (16, 'qian', '123', '钱江', 22, '男', '地球', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
