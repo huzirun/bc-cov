@@ -89,6 +89,15 @@ public class UserController {
     }
 
     /**
+     * 统计数据
+     * @return
+     */
+    @GetMapping("/count")
+    public Result<?> count() {
+        return Result.success(userMapper.countAddress());
+    }
+
+    /**
      * 用户分页列表查询，包含书籍表的一对多查询
      * @param pageNum
      * @param pageSize
