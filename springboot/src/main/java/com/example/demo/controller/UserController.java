@@ -102,6 +102,7 @@ public class UserController extends BaseController{
      */
     @GetMapping("/count")
     public Result<?> count() {
+//        User user = getUser(); // 当前登录的用户信息
         return Result.success(userMapper.countAddress());
     }
 
