@@ -14,7 +14,7 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/news")
-public class NewsController {
+public class NewsController extends BaseController {
 
     @Resource
     NewsMapper newsMapper;

@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/files")
-public class FileController {
+public class FileController extends BaseController {
     @Value("${server.port}")
     private String port;
 

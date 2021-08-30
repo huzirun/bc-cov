@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/book")
-public class BookController {
+public class BookController extends BaseController{
 
     @Resource
     BookMapper bookMapper;

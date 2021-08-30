@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/category")
-public class CategoryController {
+public class CategoryController extends BaseController {
 
     @Resource
     CategoryMapper CategoryMapper;
@@ -41,6 +41,7 @@ public class CategoryController {
 
     /**
      * 分类父子查询
+     *
      * @return
      */
     @GetMapping
@@ -52,6 +53,7 @@ public class CategoryController {
 
     /**
      * 递归查询子集
+     *
      * @param pid
      * @param allCategories
      * @return

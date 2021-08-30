@@ -23,4 +23,7 @@ public class User {
 
     @TableField(exist = false)
     private List<Book> bookList;
+
+    @TableField(exist = false)
+    private String token;
 }
