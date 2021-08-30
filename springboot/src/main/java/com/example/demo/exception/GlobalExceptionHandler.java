@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)
     @ResponseBody//返回json串
     public Result<?> customer(HttpServletRequest request, CustomException e) {
-        log.error("异常信息：", e);
+        log.error("异常信息：", e.getMsg());
         return Result.error(e.getCode(), e.getMsg());
     }
 
