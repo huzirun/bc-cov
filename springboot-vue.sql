@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 31/08/2021 12:24:41
+ Date: 31/08/2021 14:32:36
 */
 
 SET NAMES utf8mb4;
@@ -57,6 +57,29 @@ INSERT INTO `category` VALUES (3, '社会科学', 1);
 INSERT INTO `category` VALUES (4, '经济学', 1);
 INSERT INTO `category` VALUES (5, '科普百科', 2);
 INSERT INTO `category` VALUES (7, '法律', 3);
+
+-- ----------------------------
+-- Table structure for message
+-- ----------------------------
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE `message`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '内容',
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '评论人',
+  `time` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '评论时间',
+  `parent_id` bigint(20) NULL DEFAULT NULL COMMENT '父ID',
+  `foreign_id` bigint(20) NULL DEFAULT 0 COMMENT '关联id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '留言表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of message
+-- ----------------------------
+INSERT INTO `message` VALUES (20, '哈哈哈', 'admin', '2021-05-22 10:48:55', NULL, 0);
+INSERT INTO `message` VALUES (21, '哦豁', 'admin', '2021-05-22 10:49:48', NULL, 0);
+INSERT INTO `message` VALUES (22, '老弟', 'admin', '2021-05-22 10:51:07', 21, 0);
+INSERT INTO `message` VALUES (23, '哈哈哈', 'zhang', '2021-05-24 17:13:45', 22, 0);
+INSERT INTO `message` VALUES (24, '我们都爱吃大西瓜', 'zhang', '2021-05-24 17:13:58', NULL, 0);
 
 -- ----------------------------
 -- Table structure for news
