@@ -29,6 +29,9 @@ export default {
           subtext: '虚拟数据',
           left: 'left'
         },
+        tooltip: {
+          trigger: 'item'
+        },
         legend: {
           trigger: 'item'
         },

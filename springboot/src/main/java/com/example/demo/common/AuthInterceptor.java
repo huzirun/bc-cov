@@ -19,12 +19,10 @@ public class AuthInterceptor implements HandlerInterceptor {
     private UserMapper userMapper;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String servletPath = request.getServletPath();
-        System.out.println(servletPath);
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String token = request.getHeader("token");
         if (StrUtil.isBlank(token)) {
-            throw new CustomException("402", "未获取到token, 请重新登录");
+            throw new CustomException("401", "未获取到token, 请重新登录");
         }
         Integer userId = Integer.valueOf(JWT.decode(token).getAudience().get(0));
         User user = userMapper.selectById(userId);
