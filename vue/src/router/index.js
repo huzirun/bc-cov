@@ -52,6 +52,11 @@ const routes = [
                 path: 'message',
                 name: 'Message',
                 component: () => import("@/views/Message"),
+            },
+            {
+                path: 'donate',
+                name: 'Donate',
+                component: () => import("@/views/Donate"),
             }
         ]
     },

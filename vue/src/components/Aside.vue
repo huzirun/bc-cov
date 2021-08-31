@@ -16,6 +16,7 @@
         <template #title>系统管理</template>
         <el-menu-item index="/user">用户管理</el-menu-item>
       </el-submenu>
+      <el-menu-item index="/donate">请作者喝杯咖啡</el-menu-item>
     </el-menu>
   </div>
 </template>
