@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 29/08/2021 15:28:57
+ Date: 31/08/2021 12:24:41
 */
 
 SET NAMES utf8mb4;
@@ -90,16 +90,17 @@ CREATE TABLE `user`  (
   `sex` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '性别',
   `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '地址',
   `role` int(11) NULL DEFAULT NULL COMMENT '角色，1：管理员，2：普通用户',
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '头像',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'admin', 'admin', '管理员', 32, '男', '火星', 1);
-INSERT INTO `user` VALUES (13, 'zhang', '123', '张三', 20, '男', '木星', 2);
-INSERT INTO `user` VALUES (14, 'wang', '123', '王梦晨', 24, '女', '地球', 2);
-INSERT INTO `user` VALUES (15, 'li', '123', '李雪', 22, '女', '银河系', 2);
-INSERT INTO `user` VALUES (16, 'qian', '123', '钱江', 22, '男', '地球', NULL);
+INSERT INTO `user` VALUES (1, 'admin', 'admin', '管理员', 32, '男', '火星', 1, 'http://localhost:9090/files/888f2d39d0724816a738a716d56ad58a');
+INSERT INTO `user` VALUES (13, 'zhang', '123', '张三', 20, '男', '木星', 2, NULL);
+INSERT INTO `user` VALUES (14, 'wang', '123', '王梦晨', 24, '女', '地球', 2, NULL);
+INSERT INTO `user` VALUES (15, 'li', '123', '李雪', 22, '女', '银河系', 2, NULL);
+INSERT INTO `user` VALUES (16, 'qian', '123', '钱江', 22, '男', '地球', NULL, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
