@@ -2,6 +2,17 @@
   <div>
     <el-card style="width: 40%; margin: 10px">
       <el-form ref="form" :model="form" label-width="80px">
+        <el-form-item style="text-align: center" label-width="0">
+          <el-upload
+              class="avatar-uploader"
+              action="http://localhost:9090/files/upload"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+          >
+            <img v-if="form.avatar" :src="form.avatar" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
         <el-form-item label="用户名">
           <el-input v-model="form.username" disabled></el-input>
         </el-form-item>
@@ -44,6 +55,11 @@ export default {
     this.form = JSON.parse(str)
   },
   methods: {
+    handleAvatarSuccess(res) {
+      this.form.avatar = res.data
+      this.$message.success("上传成功")
+      // this.update()
+    },
     update() {
       request.put("/user", this.form).then(res => {
         console.log(res)
@@ -65,6 +81,28 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 120px;
+  height: 120px;
+  line-height: 120px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 </style>

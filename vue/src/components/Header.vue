@@ -5,7 +5,9 @@
     <div style="width: 100px">
       <el-dropdown>
         <span class="el-dropdown-link">
-          {{ user.nickName }}<i class="el-icon-arrow-down el-icon--right"></i>
+          <el-avatar :size="30" :src="user.avatar" style="position: relative; top: 10px"></el-avatar>
+           {{ user.nickName }}
+          <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <template #dropdown>
           <el-dropdown-menu>

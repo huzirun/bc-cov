@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/user/login", "/user/register", "/imserver/**");
+                .excludePathPatterns("/user/login", "/user/register", "/imserver/**", "/files/**");
     }
 
     @Bean
