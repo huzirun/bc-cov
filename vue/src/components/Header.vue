@@ -23,14 +23,11 @@
 <script>
 export default {
   name: "Header",
+  props: ['user'],
   data() {
-    return {
-      user: {}
-    }
+
   },
   created() {
-    let str = sessionStorage.getItem("user") || "{}"
-    this.user = JSON.parse(str)
   }
 }
 </script>

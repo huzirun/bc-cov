@@ -69,6 +69,8 @@ export default {
             message: "更新成功"
           })
           sessionStorage.setItem("user", JSON.stringify(this.form))
+          // 触发Layout更新用户信息
+          this.$emit("userInfo")
         } else {
           this.$message({
             type: "error",
