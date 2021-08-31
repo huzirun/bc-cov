@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="4">
         <el-card style="width: 300px; height: 300px; color: #333">
-         <div style="padding-bottom: 10px; border-bottom: 1px solid #ccc">在线用户</div>
+         <div style="padding-bottom: 10px; border-bottom: 1px solid #ccc">在线用户<span style="font-size: 12px">（点击聊天气泡开始聊天）</span></div>
           <div style="padding: 10px 0" v-for="user in users" :key="user.username">
             <span>{{ user.username }}</span>
             <i class="el-icon-chat-dot-round" style="margin-left: 10px; font-size: 16px; cursor: pointer"
