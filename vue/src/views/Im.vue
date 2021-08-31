@@ -132,9 +132,11 @@ export default {
           if (data.users) {  // 获取在线人员信息
             _this.users = data.users.filter(user => user.username !== username)
           } else {
-            _this.messages.push(data)
-            // 构建消息内容
-            _this.createContent(data.from, null, data.text)
+            if (data.from === _this.chatUser) {
+              _this.messages.push(data)
+              // 构建消息内容
+              _this.createContent(data.from, null, data.text)
+            }
           }
         };
         //关闭事件
