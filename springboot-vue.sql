@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 31/08/2021 14:32:36
+ Date: 03/09/2021 17:48:21
 */
 
 SET NAMES utf8mb4;
@@ -101,6 +101,33 @@ INSERT INTO `news` VALUES (4, '4444', '<p>444444</p><p><br/></p><p>44444</p><p><
 INSERT INTO `news` VALUES (5, '77777', '<p>7777</p><p><br/></p><p><img src=\"http://localhost:9090/files/c536f6f2f0e94983951240d73d740601\" style=\"max-width:100%;\" contenteditable=\"false\" width=\"388\" height=\"388\"/><br/></p><p>8888</p><p><br/></p><p><img src=\"http://localhost:9090/files/b344314319f047cf9192ce64ca454674\" style=\"max-width:100%;\" contenteditable=\"false\"/></p>', '管理员', '2021-07-17 19:14:14');
 
 -- ----------------------------
+-- Table structure for t_order
+-- ----------------------------
+DROP TABLE IF EXISTS `t_order`;
+CREATE TABLE `t_order`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '名称',
+  `total_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '总价',
+  `pay_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '实付款',
+  `discount` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '优惠金额',
+  `transport_price` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '运费',
+  `order_no` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '订单编号',
+  `user_id` int(11) NULL DEFAULT NULL COMMENT '用户id',
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '用户账户',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  `pay_time` timestamp NULL DEFAULT NULL COMMENT '支付时间',
+  `state` int(1) NOT NULL DEFAULT 0 COMMENT '状态',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_order
+-- ----------------------------
+INSERT INTO `t_order` VALUES (1, '明朝那些事', 60.00, 60.00, NULL, 0.00, '1433725938415255552', 1, 'admin', '2021-09-03 17:37:55', NULL, 0);
+INSERT INTO `t_order` VALUES (2, '明朝那些事', 60.00, 60.00, NULL, 0.00, '1433726340019830784', 1, 'admin', '2021-09-03 17:40:01', NULL, 1);
+INSERT INTO `t_order` VALUES (3, '明朝那些事', 60.00, 60.00, 0.00, 0.00, '1433727333361074176', 1, 'admin', '2021-09-03 17:44:27', '2021-09-03 17:44:26', 1);
+
+-- ----------------------------
 -- Table structure for user
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
@@ -114,16 +141,17 @@ CREATE TABLE `user`  (
   `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '地址',
   `role` int(11) NULL DEFAULT NULL COMMENT '角色，1：管理员，2：普通用户',
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '头像',
+  `account` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '账户余额',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'admin', 'admin', '管理员', 32, '男', '火星', 1, 'http://localhost:9090/files/888f2d39d0724816a738a716d56ad58a');
-INSERT INTO `user` VALUES (13, 'zhang', '123', '张三', 20, '男', '木星', 2, NULL);
-INSERT INTO `user` VALUES (14, 'wang', '123', '王梦晨', 24, '女', '地球', 2, NULL);
-INSERT INTO `user` VALUES (15, 'li', '123', '李雪', 22, '女', '银河系', 2, NULL);
-INSERT INTO `user` VALUES (16, 'qian', '123', '钱江', 22, '男', '地球', NULL, NULL);
+INSERT INTO `user` VALUES (1, 'admin', 'admin', '管理员', 32, '男', '火星', 1, 'http://localhost:9090/files/888f2d39d0724816a738a716d56ad58a', 100000.00);
+INSERT INTO `user` VALUES (13, 'zhang', '123', '张三', 20, '男', '木星', 2, 'http://localhost:9090/files/a73d05129bc247dc98951c7f4cfbbaf1', 200.00);
+INSERT INTO `user` VALUES (14, 'wang', '123', '王梦晨', 24, '女', '地球', 2, NULL, 300.00);
+INSERT INTO `user` VALUES (15, 'li', '123', '李雪', 22, '女', '银河系', 2, NULL, 500.00);
+INSERT INTO `user` VALUES (16, 'qian', '123', '钱江', 22, '男', '地球', NULL, NULL, 700.00);
 
 SET FOREIGN_KEY_CHECKS = 1;

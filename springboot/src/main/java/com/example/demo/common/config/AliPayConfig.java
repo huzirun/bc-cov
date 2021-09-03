@@ -1,6 +1,5 @@
 package com.example.demo.common.config;
 
-import cn.hutool.json.JSONUtil;
 import com.alipay.easysdk.factory.Factory;
 import com.alipay.easysdk.kernel.Config;
 import lombok.Data;

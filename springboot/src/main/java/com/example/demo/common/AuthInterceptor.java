@@ -8,6 +8,7 @@ import com.example.demo.entity.User;
 import com.example.demo.exception.CustomException;
 import com.example.demo.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,8 +21,8 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-//        String servletPath = request.getServletPath();
-//        System.out.println(servletPath);
+        System.out.println(request.getServletPath());
+
         String token = request.getHeader("token");
         if (StrUtil.isBlank(token)) {
             throw new CustomException("401", "未获取到token, 请重新登录");
