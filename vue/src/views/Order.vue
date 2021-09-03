@@ -1,23 +1,14 @@
 <template>
   <div style="padding: 10px">
     <!--    功能区域-->
-    <div style="margin: 10px 0">
-      <el-button type="primary" @click="add" v-if="user.role === 1">新增</el-button>
-      <el-popconfirm
-          v-if="user.role === 1"
-          title="确定删除吗？"
-          @confirm="deleteBatch"
-      >
-        <template #reference>
-          <el-button type="danger" >批量删除</el-button>
-        </template>
-      </el-popconfirm>
+<!--    <div style="margin: 10px 0">-->
+<!--      <el-button type="primary" @click="add" v-if="user.role === 1">新增</el-button>-->
 
-    </div>
+<!--    </div>-->
 
     <!--    搜索区域-->
     <div style="margin: 10px 0">
-      <el-input v-model="search" placeholder="请输入关键字" style="width: 20%" clearable></el-input>
+      <el-input v-model="search" placeholder="请输入订单编号" style="width: 20%" clearable></el-input>
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
     </div>
     <el-table
@@ -26,49 +17,63 @@
         border
         stripe
         style="width: 100%"
-        @selection-change="handleSelectionChange"
     >
       <el-table-column
-          type="selection"
-          width="55">
-      </el-table-column>
-      <el-table-column
+          width="70"
           prop="id"
           label="ID"
           sortable
       >
       </el-table-column>
       <el-table-column
+          width="150"
           prop="name"
-          label="名称">
+          label="订单名称">
       </el-table-column>
       <el-table-column
-          prop="price"
-          label="单价">
+          width="160"
+          prop="orderNo"
+          label="订单编号">
       </el-table-column>
       <el-table-column
-          prop="author"
-          label="作者">
+          prop="totalPrice"
+          label="总价">
       </el-table-column>
       <el-table-column
+          prop="payPrice"
+          label="实付款">
+      </el-table-column>
+      <el-table-column
+          prop="discount"
+          label="优惠">
+      </el-table-column>
+      <el-table-column
+          prop="transportPrice"
+          label="运费">
+      </el-table-column>
+      <el-table-column
+          width="150"
           prop="createTime"
-          label="出版时间">
+          label="创建时间">
       </el-table-column>
       <el-table-column
-          label="封面">
+          width="150"
+          prop="payTime"
+          label="付款时间">
+      </el-table-column>
+      <el-table-column
+          prop="username"
+          label="购买人">
+      </el-table-column>
+      <el-table-column label="支付状态">
         <template #default="scope">
-          <el-image
-              style="width: 100px; height: 100px"
-              :src="scope.row.cover"
-              :preview-src-list="[scope.row.cover]">
-          </el-image>
+          <span v-if="scope.row.state === 0" style="color: orange">未支付</span>
+          <span v-if="scope.row.state === 1" style="color: green">已支付</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="240">
         <template #default="scope">
-          <el-button type="primary" size="mini" @click="buy(scope.row.id)">购买</el-button>
-          <el-button size="mini" @click="handleEdit(scope.row)" v-if="user.role === 1">编辑</el-button>
-          <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.row.id)" v-if="user.role === 1">
+          <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.row.id)">
             <template #reference>
               <el-button size="mini" type="danger">删除</el-button>
             </template>
@@ -87,35 +92,6 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
       </el-pagination>
-
-      <el-dialog title="提示" v-model="dialogVisible" width="30%">
-        <el-form :model="form" label-width="120px">
-          <el-form-item label="名称">
-            <el-input v-model="form.name" style="width: 80%"></el-input>
-          </el-form-item>
-          <el-form-item label="价格">
-            <el-input v-model="form.price" style="width: 80%"></el-input>
-          </el-form-item>
-          <el-form-item label="作者">
-            <el-input v-model="form.author" style="width: 80%"></el-input>
-          </el-form-item>
-          <el-form-item label="出版时间">
-            <el-date-picker v-model="form.createTime" value-format="YYYY-MM-DD" type="date" style="width: 80%" clearable></el-date-picker>
-          </el-form-item>
-          <el-form-item label="封面">
-            <el-upload ref="upload" :action="filesUploadUrl" :on-success="filesUploadSuccess">
-              <el-button type="primary">点击上传</el-button>
-            </el-upload>
-          </el-form-item>
-        </el-form>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="save">确 定</el-button>
-          </span>
-        </template>
-      </el-dialog>
-
     </div>
   </div>
 </template>
@@ -126,7 +102,7 @@
 import request from "@/utils/request";
 
 export default {
-  name: 'Book',
+  name: 'Order',
   components: {
 
   },
@@ -141,8 +117,6 @@ export default {
       pageSize: 10,
       total: 0,
       tableData: [],
-      filesUploadUrl: "http://" + window.server.filesUploadUrl + ":9090/files/upload",
-      ids: []
     }
   },
   created() {
@@ -158,36 +132,9 @@ export default {
     this.load()
   },
   methods: {
-    buy(bookId) {
-      request.get("/order/buy/" + bookId).then(res => {
-        // 请求成功跳转沙箱支付的页面
-        window.open(res.data)
-      })
-    },
-    deleteBatch() {
-      if (!this.ids.length) {
-        this.$message.warning("请选择数据！")
-        return
-      }
-      request.post("/book/deleteBatch", this.ids).then(res => {
-        if (res.code === '0') {
-          this.$message.success("批量删除成功")
-          this.load()
-        } else {
-          this.$message.error(res.msg)
-        }
-      })
-    },
-    handleSelectionChange(val) {
-      this.ids = val.map(v => v.id)   // [{id,name}, {id,name}] => [id,id]
-    },
-    filesUploadSuccess(res) {
-      console.log(res)
-      this.form.cover = res.data
-    },
     load() {
       this.loading = true
-      request.get("/book", {
+      request.get("/order", {
         params: {
           pageNum: this.currentPage,
           pageSize: this.pageSize,
@@ -208,7 +155,7 @@ export default {
     },
     save() {
       if (this.form.id) {  // 更新
-        request.put("/book", this.form).then(res => {
+        request.put("/order", this.form).then(res => {
           console.log(res)
           if (res.code === '0') {
             this.$message({
@@ -225,7 +172,7 @@ export default {
           this.dialogVisible = false  // 关闭弹窗
         })
       }  else {  // 新增
-        request.post("/book", this.form).then(res => {
+        request.post("/order", this.form).then(res => {
           console.log(res)
           if (res.code === '0') {
             this.$message({
@@ -256,7 +203,7 @@ export default {
     },
     handleDelete(id) {
       console.log(id)
-      request.delete("/book/" + id).then(res => {
+      request.delete("/order/" + id).then(res => {
         if (res.code === '0') {
           this.$message({
             type: "success",

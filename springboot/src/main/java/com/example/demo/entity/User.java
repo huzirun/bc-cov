@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @TableName("user")
@@ -27,4 +28,6 @@ public class User {
 
     @TableField(exist = false)
     private String token;
+
+    private BigDecimal account;
 }

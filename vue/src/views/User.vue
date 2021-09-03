@@ -114,6 +114,9 @@
         <el-form-item label="地址">
           <el-input type="textarea" v-model="form.address" style="width: 80%"></el-input>
         </el-form-item>
+        <el-form-item label="账户余额">
+          <el-input v-model="form.account" style="width: 80%"></el-input>
+        </el-form-item>
       </el-form>
       <template #footer>
           <span class="dialog-footer">

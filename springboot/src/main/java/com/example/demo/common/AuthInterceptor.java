@@ -20,6 +20,8 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+//        String servletPath = request.getServletPath();
+//        System.out.println(servletPath);
         String token = request.getHeader("token");
         if (StrUtil.isBlank(token)) {
             throw new CustomException("401", "未获取到token, 请重新登录");
