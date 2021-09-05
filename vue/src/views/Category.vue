@@ -41,6 +41,29 @@
       </el-table-column>
     </el-table>
 
+    <el-card style="margin: 10px 0; width: 50%">
+      <div class="custom-tree-container">
+        <el-tree :data="tableData" :props="defaultProps" show-checkbox
+                 @check-change="handleCheckChange"
+                 node-key="id"
+                 :default-expanded-keys="[1, 2]"
+                 :default-checked-keys="checkedList"
+        >
+          <template #default="{ node, data }">
+        <span class="custom-tree-node">
+          <span>{{ node.label }}</span>
+          <span>
+            <a
+                @click="remove(node, data)">
+              Delete
+            </a>
+          </span>
+        </span>
+          </template>
+        </el-tree>
+      </div>
+    </el-card>
+
     <div style="margin: 10px 0">
       <el-dialog title="提示" v-model="dialogVisible" width="30%">
         <el-form :model="form" label-width="120px">
@@ -81,6 +104,11 @@ export default {
       pageSize: 10,
       total: 0,
       tableData: [],
+      defaultProps: {
+        children: 'children',
+        label: 'name'
+      },
+      checkedList: []
     }
   },
   created() {
@@ -96,12 +124,32 @@ export default {
     this.load()
   },
   methods: {
+    remove(node, data) {
+      request.delete("/category/" + data.id).then(res => {
+        this.load()
+      })
+      // console.log(data)
+      // const parent = node.parent;
+      // const children = parent.data.children || parent.data;
+      // const index = children.findIndex(d => d.id === data.id);
+      // children.splice(index, 1);
+      // this.data = [...this.data]
+    },
+    handleCheckChange(data, checked, indeterminate) {
+      console.log(data.id);
+      console.log(data.name);
+    },
     load() {
       this.loading = true
       request.get("/category").then(res => {
         this.loading = false
         this.tableData = res.data
+
+        // 赋值选中的节点
+        let checkedData = [4];
+        this.checkedList = checkedData
       })
+
     },
     add() {
       this.dialogVisible = true
@@ -178,3 +226,13 @@ export default {
   }
 }
 </script>
+<style>
+.custom-tree-node {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  padding-right: 8px;
+}
+</style>

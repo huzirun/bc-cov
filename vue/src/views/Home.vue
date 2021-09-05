@@ -3,6 +3,7 @@
     <el-card>
       <div id="myChart" :style="{width: '800px', height: '600px'}"></div>
     </el-card>
+
   </div>
 </template>
 
@@ -12,9 +13,7 @@ import request from "@/utils/request";
 export default {
   name: "Home",
   data() {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
+    return {}
   },
   mounted() {
     this.drawLine();

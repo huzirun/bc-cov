@@ -141,7 +141,6 @@ export default {
       this.dialogVisible = true
       this.form = {}
 
-
       this.$nextTick(() => {
         // 关联弹窗里面的div，new一个 editor对象
         if (!editor) {
@@ -152,6 +151,9 @@ export default {
           editor.config.uploadFileName = "file"  // 设置上传参数名称
           editor.create()
         }
+
+        editor.txt.html("")
+
       })
 
     },
