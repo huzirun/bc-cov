@@ -11,11 +11,30 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 03/09/2021 17:48:21
+ Date: 12/09/2021 23:32:53
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for area
+-- ----------------------------
+DROP TABLE IF EXISTS `area`;
+CREATE TABLE `area`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `pid` int(11) NULL DEFAULT NULL,
+  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of area
+-- ----------------------------
+INSERT INTO `area` VALUES (1, '安徽省', NULL, 'Anhui');
+INSERT INTO `area` VALUES (2, '合肥市', 1, 'Hefei');
+INSERT INTO `area` VALUES (3, '政务区', 2, 'Zhengwu');
 
 -- ----------------------------
 -- Table structure for book
@@ -30,7 +49,7 @@ CREATE TABLE `book`  (
   `cover` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '封面地址',
   `user_id` int(11) NULL DEFAULT NULL COMMENT '用户id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of book
@@ -70,7 +89,7 @@ CREATE TABLE `message`  (
   `parent_id` bigint(20) NULL DEFAULT NULL COMMENT '父ID',
   `foreign_id` bigint(20) NULL DEFAULT 0 COMMENT '关联id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '留言表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '留言表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of message
@@ -92,13 +111,15 @@ CREATE TABLE `news`  (
   `author` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '作者',
   `time` datetime NULL DEFAULT NULL COMMENT '发布时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of news
 -- ----------------------------
 INSERT INTO `news` VALUES (4, '4444', '<p>444444</p><p><br/></p><p>44444</p><p><br/></p><p><br/></p><p>555555<img src=\"https://img1.baidu.com/it/u=4110196045,3829597861&amp;fm=26&amp;fmt=auto&amp;gp=0.jpg\" contenteditable=\"false\" style=\"font-size: 14px; max-width: 100%;\"/></p>', '管理员', '2021-07-17 18:55:27');
 INSERT INTO `news` VALUES (5, '77777', '<p>7777</p><p><br/></p><p><img src=\"http://localhost:9090/files/c536f6f2f0e94983951240d73d740601\" style=\"max-width:100%;\" contenteditable=\"false\" width=\"388\" height=\"388\"/><br/></p><p>8888</p><p><br/></p><p><img src=\"http://localhost:9090/files/b344314319f047cf9192ce64ca454674\" style=\"max-width:100%;\" contenteditable=\"false\"/></p>', '管理员', '2021-07-17 19:14:14');
+INSERT INTO `news` VALUES (6, '带你从0搭建一个Springboot+vue前后端分离项目，真的很简单！', '<p><iframe src=\"//player.bilibili.com/player.html?aid=803885504&amp;bvid=BV14y4y1M7Nc&amp;cid=361690131&amp;page=1\" scrolling=\"no\" border=\"0\" frameborder=\"no\" framespacing=\"0\" allowfullscreen=\"true\" width=\"600\" height=\"400\"> </iframe></p>', '管理员', '2021-09-05 22:28:25');
+INSERT INTO `news` VALUES (7, '我擦！妹子给我整害羞了⁄(⁄ ⁄ ⁄ω⁄ ⁄ ⁄)⁄……', '<p><iframe src=\"//player.bilibili.com/player.html?aid=717601909&amp;bvid=BV1sQ4y1174g&amp;cid=396410411&amp;page=1\" scrolling=\"no\" border=\"0\" frameborder=\"no\" framespacing=\"0\" allowfullscreen=\"true\" width=\"600\" height=\"400\"> </iframe></p>', '管理员', '2021-09-05 22:31:40');
 
 -- ----------------------------
 -- Table structure for t_order
@@ -118,14 +139,15 @@ CREATE TABLE `t_order`  (
   `pay_time` timestamp NULL DEFAULT NULL COMMENT '支付时间',
   `state` int(1) NOT NULL DEFAULT 0 COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_order
 -- ----------------------------
-INSERT INTO `t_order` VALUES (1, '明朝那些事', 60.00, 60.00, NULL, 0.00, '1433725938415255552', 1, 'admin', '2021-09-03 17:37:55', NULL, 0);
-INSERT INTO `t_order` VALUES (2, '明朝那些事', 60.00, 60.00, NULL, 0.00, '1433726340019830784', 1, 'admin', '2021-09-03 17:40:01', NULL, 1);
-INSERT INTO `t_order` VALUES (3, '明朝那些事', 60.00, 60.00, 0.00, 0.00, '1433727333361074176', 1, 'admin', '2021-09-03 17:44:27', '2021-09-03 17:44:26', 1);
+INSERT INTO `t_order` VALUES (14, '明朝那些事', 60.00, 60.00, 0.00, 0.00, '1434521785293873152', 1, 'admin', '2021-09-05 22:20:20', NULL, 0);
+INSERT INTO `t_order` VALUES (15, '明朝那些事', 60.00, 60.00, 0.00, 0.00, '1434522270700761088', 1, 'admin', '2021-09-05 22:22:42', '2021-09-05 22:22:37', 1);
+INSERT INTO `t_order` VALUES (16, '明朝那些事', 60.00, 60.00, 0.00, 0.00, '1434522590331891712', 1, 'admin', '2021-09-05 22:24:00', '2021-09-05 22:23:57', 1);
+INSERT INTO `t_order` VALUES (17, '明朝那些事', 60.00, 60.00, 0.00, 0.00, '1436963760559362048', 1, 'admin', '2021-09-12 16:03:52', NULL, 0);
 
 -- ----------------------------
 -- Table structure for user

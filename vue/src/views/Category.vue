@@ -64,6 +64,10 @@
       </div>
     </el-card>
 
+    <el-card style="width: 50%">
+      <el-cascader :options="options" clearable @change="changeCas" v-model="casdata"></el-cascader>
+    </el-card>
+
     <div style="margin: 10px 0">
       <el-dialog title="提示" v-model="dialogVisible" width="30%">
         <el-form :model="form" label-width="120px">
@@ -104,13 +108,58 @@ export default {
       pageSize: 10,
       total: 0,
       tableData: [],
+      casdata: ['Anhui', 'Hefei', 'Zhengwu'],
       defaultProps: {
         children: 'children',
         label: 'name'
       },
-      checkedList: []
+      checkedList: [],
+      options: []
     }
   },
+
+// {
+//   value: 'Anhui',
+//       label: '安徽省',
+//     children: [
+//   {
+//     value: 'Hefei',
+//     label: '合肥市',
+//     children: [
+//       {
+//         value: 'Zhenwu',
+//         label: '政务区',
+//       },
+//     ],
+//   },
+//   {
+//     value: 'Wuhu',
+//     label: '芜湖市',
+//     children: [
+//       {
+//         value: 'Jinghu',
+//         label: '镜湖区',
+//       },
+//     ],
+//   }
+// ]
+// },
+// {
+//   value: 'Jiangsu',
+//       label: '江苏省',
+//     children: [
+//   {
+//     value: 'Nanjing',
+//     label: '南京市',
+//     children: [
+//       {
+//         value: 'Xuanwu',
+//         label: '玄武区',
+//       },
+//     ],
+//   }
+// ]
+// }
   created() {
     let userStr = sessionStorage.getItem("user") || "{}"
     this.user = JSON.parse(userStr)
@@ -121,9 +170,18 @@ export default {
       }
     })
 
+    request.get("/area/tree").then(res => {
+      console.log(res.data)
+      this.options = res.data
+    })
+
     this.load()
   },
   methods: {
+    changeCas(data) {
+      console.log(data)
+      console.log(this.casdata)
+    },
     remove(node, data) {
       request.delete("/category/" + data.id).then(res => {
         this.load()

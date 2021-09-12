@@ -29,7 +29,7 @@ export default {
         // alert('您的位置：'+r.point.lng+','+r.point.lat);
       }
       else {
-        alert('failed'+this.getStatus());
+        // alert('failed'+this.getStatus());
       }
     });
 
