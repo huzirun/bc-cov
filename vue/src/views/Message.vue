@@ -65,7 +65,10 @@ export default {
   },
   methods: {
     loadMessage() {
-      request.get("/message/foreign/").then(res => {
+      // 如果是留言的话，就写死=0
+      // 如果是 评论，则需要设置 当前被评论的模块的id作为foreignId
+      let foreignId = 0;
+      request.get("/message/foreign/" + foreignId).then(res => {
         this.messages = res.data;
       })
     },
@@ -97,6 +100,7 @@ export default {
         });
         return;
       }
+      // 如果是评论的话，在 save的时候要注意设置 当前模块的id为 foreignId。也就是  entity.foreignId = 模块id
       request.post("/message", this.entity).then(res => {
         if (res.code === '0') {
           this.$message({
