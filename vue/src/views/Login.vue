@@ -45,11 +45,11 @@ export default {
   name: "Login",
   components: {
     ValidCode,
-    vedioCanPlay: false,
-    fixStyle: '',
   },
   data() {
     return {
+      vedioCanPlay: false,
+      fixStyle: '',
       form: {role: 1},
       rules: {
         username: [
@@ -100,6 +100,9 @@ export default {
     window.onresize()
   },
   methods: {
+    canplay() {
+      this.vedioCanPlay = true
+    },
     // 接收验证码组件提交的 4位验证码
     createValidCode(data) {
       this.validCode = data
