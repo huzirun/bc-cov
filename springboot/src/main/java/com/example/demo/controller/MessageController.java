@@ -57,8 +57,8 @@ public class MessageController extends BaseController{
 
     // 查询所有数据
     @GetMapping("/foreign/{id}")
-    public Result<?> foreign(@PathVariable Integer foreignId) {
-        return Result.success(findByForeign(foreignId));
+    public Result<?> foreign(@PathVariable Integer id) {
+        return Result.success(findByForeign(id));
     }
 
     @GetMapping("/page")
