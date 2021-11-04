@@ -2,7 +2,7 @@
   <div>
     <el-menu
         style="width: 200px; min-height: calc(100vh - 50px)"
-        :default-active="path"
+        :default-active="$route.path"
         router
     >
       <el-menu-item index="/home">
@@ -49,8 +49,7 @@ export default {
   name: "Aside",
   data() {
     return {
-      user: {},
-      path: this.$route.path   // 设置默认高亮的菜单
+      user: {}
     }
   },
   created() {
