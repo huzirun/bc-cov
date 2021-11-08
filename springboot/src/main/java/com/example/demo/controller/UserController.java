@@ -13,7 +13,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Result;
-import com.example.demo.entity.User;
+import com.example.demo.entity.*;
+import com.example.demo.mapper.PermissionMapper;
+import com.example.demo.mapper.RoleMapper;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.utils.TokenUtils;
 import org.springframework.web.bind.annotation.*;
@@ -34,17 +36,36 @@ public class UserController extends BaseController{
 
     @Resource
     UserMapper userMapper;
+    @Resource
+    RoleMapper roleMapper;
+    @Resource
+    PermissionMapper permissionMapper;
 
     @PostMapping("/login")
-    public Result<?> login(@RequestBody User user) {
+    public Result<?> login(@RequestBody User userParam) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username", user.getUsername());
-        queryWrapper.eq("password", user.getPassword());
-        queryWrapper.eq("role", user.getRole());
+        queryWrapper.eq("username", userParam.getUsername());
+        queryWrapper.eq("password", userParam.getPassword());
         User res = userMapper.selectOne(queryWrapper);
         if (res == null) {
             return Result.error("-1", "用户名或密码错误");
         }
+        HashSet<Permission> permissionSet = new HashSet<>();
+        // 1. 从user_role表通过用户id查询所有的角色信息
+        Integer userId = res.getId();
+        List<UserRole> userRoles = roleMapper.getUserRoleByUserId(userId);
+        for (UserRole userRole : userRoles) {
+            // 2.根据roleId从role_permission表查询出所有的permissionId
+            List<RolePermission> rolePermissions = permissionMapper.getRolePermissionByRoleId(userRole.getRoleId());
+            for (RolePermission rolePermission : rolePermissions) {
+                Integer permissionId = rolePermission.getPermissionId();
+                // 3. 根据permissionId查询permission信息
+                Permission permission = permissionMapper.selectById(permissionId);
+                permissionSet.add(permission);
+            }
+        }
+        res.setPermissions(permissionSet);
+
         // 生成token
         String token = TokenUtils.genToken(res);
         res.setToken(token);
@@ -60,7 +81,6 @@ public class UserController extends BaseController{
         if (user.getPassword() == null) {
             user.setPassword("123456");
         }
-        user.setRole(2);
         userMapper.insert(user);
         return Result.success();
     }
@@ -143,7 +163,6 @@ public class UserController extends BaseController{
             row1.put("年龄", user.getAge());
             row1.put("性别", user.getSex());
             row1.put("地址", user.getAddress());
-            row1.put("角色", user.getRole());
             list.add(row1);
         }
 
@@ -180,7 +199,6 @@ public class UserController extends BaseController{
             user.setAge(Integer.valueOf(row.get(2).toString()));
             user.setSex(row.get(3).toString());
             user.setAddress(row.get(4).toString());
-            user.setRole(Integer.valueOf(row.get(5).toString()));
             saveList.add(user);
         }
         for (User user : saveList) {
@@ -188,4 +206,5 @@ public class UserController extends BaseController{
         }
         return Result.success();
     }
+
 }

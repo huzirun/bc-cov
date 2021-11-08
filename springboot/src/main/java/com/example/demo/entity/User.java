@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 @TableName("user")
 @Data
@@ -20,7 +21,6 @@ public class User {
     private Integer age;
     private String sex;
     private String address;
-    private Integer role;
     private String avatar;
 
     @TableField(exist = false)
@@ -30,4 +30,7 @@ public class User {
     private String token;
 
     private BigDecimal account;
+
+    @TableField(exist = false)
+    private Set<Permission> permissions;
 }
