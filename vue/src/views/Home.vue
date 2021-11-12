@@ -58,11 +58,13 @@ export default {
         ]
       }
       request.get("/user/count").then(res => {
-        res.data.forEach(item => {
-          option.series[0].data.push({name: item.address, value: item.count})
-        })
-        // 绘制图表
-        myChart.setOption(option);
+        if (res.code === '0') {
+          res.data.forEach(item => {
+            option.series[0].data.push({name: item.address, value: item.count})
+          })
+          // 绘制图表
+          myChart.setOption(option);
+        }
       })
 
     }

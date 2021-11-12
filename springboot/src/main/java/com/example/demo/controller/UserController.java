@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
@@ -64,7 +65,10 @@ public class UserController extends BaseController{
                 permissionSet.add(permission);
             }
         }
-        res.setPermissions(permissionSet);
+        // 对资源根据id进行排序
+        LinkedHashSet<Permission> sortedSet = permissionSet.stream().sorted(Comparator.comparing(Permission::getId)).collect(Collectors.toCollection(LinkedHashSet::new));
+        //设置当前用户的资源信息
+        res.setPermissions(sortedSet);
 
         // 生成token
         String token = TokenUtils.genToken(res);

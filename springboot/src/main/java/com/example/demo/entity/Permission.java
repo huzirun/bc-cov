@@ -15,6 +15,7 @@ public class Permission {
     private String name;
     private String path;
     private String comment;
+    private String icon;
 
     @Override
     public boolean equals(Object o) {

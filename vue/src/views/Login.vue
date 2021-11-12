@@ -40,6 +40,7 @@
 <script>
 import request from "@/utils/request";
 import ValidCode from "@/components/ValidCode";
+import {activeRouter} from "@/utils/permission";
 
 export default {
   name: "Login",
@@ -107,7 +108,7 @@ export default {
     createValidCode(data) {
       this.validCode = data
     },
-    login() {
+    login () {
       this.$refs['form'].validate((valid) => {
         if (valid) {
           if (!this.form.validCode) {
@@ -125,7 +126,13 @@ export default {
                 message: "登录成功"
               })
               sessionStorage.setItem("user", JSON.stringify(res.data))  // 缓存用户信息
+
+              const permissions = res.data.permissions;
+              // 初始化路由信息
+              activeRouter(permissions)
+
               this.$router.push("/")  //登录成功之后进行页面的跳转，跳转到主页
+
             } else {
               this.$message({
                 type: "error",

@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 08/11/2021 20:23:27
+ Date: 12/11/2021 20:53:22
 */
 
 SET NAMES utf8mb4;
@@ -135,14 +135,23 @@ CREATE TABLE `permission`  (
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '名称',
   `path` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '资源路径',
   `comment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '备注',
+  `icon` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '图标',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of permission
 -- ----------------------------
-INSERT INTO `permission` VALUES (1, 'category', '/category', '分类管理');
-INSERT INTO `permission` VALUES (2, 'book', '/book', '书籍管理');
+INSERT INTO `permission` VALUES (1, 'Home', '/home', '主页', 'el-icon-house');
+INSERT INTO `permission` VALUES (2, 'Book', '/book', '书籍管理', 'el-icon-files');
+INSERT INTO `permission` VALUES (3, 'Category', '/category', '分类管理', 'el-icon-menu');
+INSERT INTO `permission` VALUES (4, 'Order', '/order', '我的订单', 'el-icon-s-order');
+INSERT INTO `permission` VALUES (5, 'News', '/news', '新闻管理', 'el-icon-news');
+INSERT INTO `permission` VALUES (6, 'Map', '/map', '百度地图', 'el-icon-map-location');
+INSERT INTO `permission` VALUES (7, 'Im', '/im', '聊天室', 'el-icon-chat-round');
+INSERT INTO `permission` VALUES (8, 'Message', '/message', '在线留言', 'el-icon-message');
+INSERT INTO `permission` VALUES (9, 'User', '/user', '用户管理', 'el-icon-user');
+INSERT INTO `permission` VALUES (10, 'Donate', '/donate', '请作者喝杯咖啡', 'el-icon-coffee');
 
 -- ----------------------------
 -- Table structure for role
@@ -176,7 +185,14 @@ CREATE TABLE `role_permission`  (
 -- ----------------------------
 INSERT INTO `role_permission` VALUES (1, 1);
 INSERT INTO `role_permission` VALUES (1, 2);
-INSERT INTO `role_permission` VALUES (2, 2);
+INSERT INTO `role_permission` VALUES (1, 3);
+INSERT INTO `role_permission` VALUES (1, 4);
+INSERT INTO `role_permission` VALUES (1, 5);
+INSERT INTO `role_permission` VALUES (1, 6);
+INSERT INTO `role_permission` VALUES (1, 7);
+INSERT INTO `role_permission` VALUES (1, 8);
+INSERT INTO `role_permission` VALUES (1, 9);
+INSERT INTO `role_permission` VALUES (1, 10);
 
 -- ----------------------------
 -- Table structure for t_order
