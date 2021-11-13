@@ -32,26 +32,47 @@ const router = createRouter({
     routes
 })
 
+// 在刷新页面的时候重置当前路由
+activeRouter()
 
+function activeRouter() {
+    const userStr = sessionStorage.getItem("user")
+    if (userStr) {
+        const user = JSON.parse(userStr)
+        let root = {
+            path: '/',
+            name: 'Layout',
+            component: Layout,
+            redirect: "/home",
+            children: []
+        }
+        user.permissions.forEach(p => {
+            let obj = {
+                path: p.path,
+                name: p.name,
+                component: () => import("@/views/" + p.name)
+            };
+            root.children.push(obj)
+        })
+        if (router) {
+            router.addRoute(root)
+        }
+    }
+}
 
-// 限制某些页面禁止未登录访问
-// let limitPagePath = ['/about']
-
-// router.beforeEach((to, from, next) => {
-//     if (limitPagePath.includes(to.path)) {
-//         // 判断sessionStorage是否保存了用户信息
-//         let userStr = sessionStorage.getItem("user") || "{}"
-//         let user = JSON.parse(userStr)
-//         if (!user.id) {
-//             // 跳转到登录页面
-//             next({path: "/login"})
-//         } else {
-//             next()
-//         }
-//     } else {
-//         next()
-//     }
-//
-// })
+router.beforeEach((to, from, next) => {
+    if (to.path === '/login') {
+        next()
+        return
+    }
+    let user = sessionStorage.getItem("user") ? JSON.parse(sessionStorage.getItem("user")) : {}
+    if (!user.permissions || !user.permissions.length) {
+        next('/login')
+    } else if (!user.permissions.find(p => p.path === to.path)) {
+        next('/login')
+    } else {
+        next()
+    }
+})
 
 export default router

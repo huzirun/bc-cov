@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
-public class UserController extends BaseController{
+public class UserController extends BaseController {
 
     @Resource
     UserMapper userMapper;
@@ -104,6 +104,26 @@ public class UserController extends BaseController{
         return Result.success();
     }
 
+    // 改变权限接口
+    @PutMapping("/changeRole")
+    public Result<?> changeRole(@RequestBody User user) {
+        // 先根据角色id删除所有的角色跟权限的绑定关系
+        roleMapper.deleteRoleByUserId(user.getId());
+        // 再新增 新的绑定关系
+        for (Integer roleId : user.getRoles()) {
+            roleMapper.insertUserRole(user.getId(), roleId);
+        }
+
+        // 获取当前登录用户的角色id列表
+        User currentUser = getUser();
+        // 如果当前登录用户的角色列表包含需要修改的角色id，那么就重新登录
+        if (user.getId().equals(currentUser.getId())) {
+            return Result.success(true);
+        }
+//        如果不包含，则返回false，不需要重新登录。
+        return Result.success(false);
+    }
+
     @DeleteMapping("/{id}")
     public Result<?> update(@PathVariable Long id) {
         userMapper.deleteById(id);
@@ -122,6 +142,7 @@ public class UserController extends BaseController{
 
     /**
      * 统计数据
+     *
      * @return
      */
     @GetMapping("/count")
@@ -132,6 +153,7 @@ public class UserController extends BaseController{
 
     /**
      * 用户分页列表查询，包含书籍表的一对多查询
+     *
      * @param pageNum
      * @param pageSize
      * @param search
@@ -141,16 +163,24 @@ public class UserController extends BaseController{
     public Result<?> findPage(@RequestParam(defaultValue = "1") Integer pageNum,
                               @RequestParam(defaultValue = "10") Integer pageSize,
                               @RequestParam(defaultValue = "") String search) {
-        LambdaQueryWrapper<User> wrapper = Wrappers.<User>lambdaQuery();
+        LambdaQueryWrapper<User> wrapper = Wrappers.<User>lambdaQuery().orderByAsc(User::getId);
         if (StrUtil.isNotBlank(search)) {
             wrapper.like(User::getNickName, search);
         }
+
         Page<User> userPage = userMapper.findPage(new Page<>(pageNum, pageSize), search);
+        // 设置用户的角色id列表
+        for (User record : userPage.getRecords()) {
+            List<UserRole> roles = roleMapper.getUserRoleByUserId(record.getId());
+            List<Integer> roleIds = roles.stream().map(UserRole::getRoleId).collect(Collectors.toList());
+            record.setRoles(roleIds);
+        }
         return Result.success(userPage);
     }
 
     /**
      * Excel导出
+     *
      * @param response
      * @throws IOException
      */
@@ -187,6 +217,7 @@ public class UserController extends BaseController{
     /**
      * Excel导入
      * 导入的模板可以使用 Excel导出的文件
+     *
      * @param file Excel
      * @return
      * @throws IOException

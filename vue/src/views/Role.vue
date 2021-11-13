@@ -1,20 +1,8 @@
 <template>
   <div style="padding: 10px">
-
     <!--    功能区域-->
     <div style="margin: 10px 0">
       <el-button type="primary" @click="add">新增</el-button>
-      <el-upload
-        action="http://localhost:9090/user/import"
-        :on-success="handleUploadSuccess"
-        :show-file-list=false
-        :limit="1"
-        accept='.xlsx'
-        style="display: inline-block; margin: 0 10px"
-      >
-        <el-button type="primary">导入</el-button>
-      </el-upload>
-      <el-button type="primary" @click="exportUser">导出</el-button>
     </div>
 
     <!--    搜索区域-->
@@ -32,40 +20,28 @@
           prop="id"
           label="ID"
           sortable
+          width="80"
       >
       </el-table-column>
       <el-table-column
-          prop="username"
-          label="用户名">
+          prop="name"
+          label="名称">
       </el-table-column>
       <el-table-column
-          prop="nickName"
-          label="昵称">
+          prop="comment"
+          label="备注">
       </el-table-column>
-      <el-table-column
-          prop="age"
-          label="年龄">
-      </el-table-column>
-      <el-table-column
-          prop="sex"
-          label="性别">
-      </el-table-column>
-      <el-table-column
-          prop="address"
-          label="地址">
-      </el-table-column>
-      <el-table-column label="角色列表" width="300">
+      <el-table-column label="权限菜单">
         <template #default="scope">
-          <el-select v-model="scope.row.roles" multiple placeholder="请选择" style="width: 80%">
-            <el-option v-for="item in roles" :key="item.id" :label="item.comment" :value="item.id"></el-option>
+          <el-select clearable v-model="scope.row.permissions" multiple placeholder="请选择" style="width: 80%">
+            <el-option v-for="item in permissions" :key="item.id" :label="item.comment" :value="item.id"></el-option>
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="400">
+      <el-table-column label="操作">
         <template #default="scope">
-          <el-button size="mini" type="primary" @click="handleChange(scope.row)">保存角色信息</el-button>
-          <el-button size="mini" type="success" plain @click="showBooks(scope.row.bookList)">查看图书列表</el-button>
-          <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">编辑</el-button>
+          <el-button size="mini" type="primary" @click="handleChange(scope.row)">保存权限菜单</el-button>
+          <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
           <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.row.id)">
             <template #reference>
               <el-button size="mini" type="danger">删除</el-button>
@@ -87,36 +63,13 @@
       </el-pagination>
     </div>
 
-
-    <el-dialog title="用户拥有的图书列表" v-model="bookVis" width="30%">
-      <el-table :data="bookList" stripe border>
-        <el-table-column prop="id" label="ID"></el-table-column>
-        <el-table-column prop="name" label="名称"></el-table-column>
-        <el-table-column prop="price" label="价格"></el-table-column>
-      </el-table>
-    </el-dialog>
-
     <el-dialog title="提示" v-model="dialogVisible" width="30%">
       <el-form :model="form" label-width="120px">
-        <el-form-item label="用户名">
-          <el-input v-model="form.username" style="width: 80%"></el-input>
+        <el-form-item label="名称">
+          <el-input v-model="form.name" style="width: 80%"></el-input>
         </el-form-item>
-        <el-form-item label="昵称">
-          <el-input v-model="form.nickName" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="年龄">
-          <el-input v-model="form.age" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="性别">
-          <el-radio v-model="form.sex" label="男">男</el-radio>
-          <el-radio v-model="form.sex" label="女">女</el-radio>
-          <el-radio v-model="form.sex" label="未知">未知</el-radio>
-        </el-form-item>
-        <el-form-item label="地址">
-          <el-input type="textarea" v-model="form.address" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="账户余额">
-          <el-input v-model="form.account" style="width: 80%"></el-input>
+        <el-form-item label="备注">
+          <el-input v-model="form.comment" style="width: 80%"></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -132,25 +85,22 @@
 
 <script>
 
-
 import request from "@/utils/request";
 
 export default {
-  name: 'Home',
+  name: 'Role',
   components: {},
   data() {
     return {
       loading: true,
       form: {},
       dialogVisible: false,
-      bookVis: false,
       search: '',
       currentPage: 1,
       pageSize: 10,
       total: 0,
       tableData: [],
-      bookList: [],
-      roles: []
+      permissions: []
     }
   },
   created() {
@@ -158,7 +108,7 @@ export default {
   },
   methods: {
     handleChange(row) {
-      request.put("/user/changeRole", row).then(res => {
+      request.put("/role/changePermission", row).then(res => {
         if (res.code === '0') {
           this.$message.success("更新成功")
           if (res.data) {
@@ -167,13 +117,9 @@ export default {
         }
       })
     },
-    showBooks(books) {
-      this.bookList = books
-      this.bookVis = true
-    },
     load() {
       this.loading = true
-      request.get("/user", {
+      request.get("/role", {
         params: {
           pageNum: this.currentPage,
           pageSize: this.pageSize,
@@ -185,26 +131,18 @@ export default {
         this.total = res.data.total
       })
 
-      request.get("/role/all").then(res => {
-        this.roles = res.data
+      request.get("/permission/all").then(res => {
+        this.permissions = res.data
       })
-    },
-    handleUploadSuccess(res) {
-      if (res.code === "0") {
-        this.$message.success("导入成功")
-        this.load()
-      }
-    },
-    exportUser() {
-      location.href = "http://" + window.server.filesUploadUrl + ":9090/user/export";
     },
     add() {
       this.dialogVisible = true
       this.form = {}
     },
     save() {
+
       if (this.form.id) {  // 更新
-        request.put("/user", this.form).then(res => {
+        request.put("/role", this.form).then(res => {
           console.log(res)
           if (res.code === '0') {
             this.$message({
@@ -221,7 +159,11 @@ export default {
           this.dialogVisible = false  // 关闭弹窗
         })
       } else {  // 新增
-        request.post("/user", this.form).then(res => {
+        let userStr = sessionStorage.getItem("user") || "{}"
+        let user = JSON.parse(userStr)
+        this.form.author = user.nickName
+
+        request.post("/role", this.form).then(res => {
           console.log(res)
           if (res.code === '0') {
             this.$message({
@@ -247,7 +189,7 @@ export default {
     },
     handleDelete(id) {
       console.log(id)
-      request.delete("/user/" + id).then(res => {
+      request.delete("/role/" + id).then(res => {
         if (res.code === '0') {
           this.$message({
             type: "success",

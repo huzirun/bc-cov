@@ -64,10 +64,12 @@ public class CategoryController extends BaseController {
             if (pid == null) {
                 if (category.getPid() == null) {
                     categoryList.add(category);
+                    // 继续递归查询子集
                     category.setChildren(loopQuery(category.getId(), allCategories));
                 }
             } else if (pid.equals(category.getPid())) {
                 categoryList.add(category);
+                // 继续递归查询子集
                 category.setChildren(loopQuery(category.getId(), allCategories));
             }
         }

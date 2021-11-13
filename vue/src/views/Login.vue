@@ -127,10 +127,8 @@ export default {
               })
               sessionStorage.setItem("user", JSON.stringify(res.data))  // 缓存用户信息
 
-              const permissions = res.data.permissions;
-              // 初始化路由信息
-              activeRouter(permissions)
-
+              // 登录成功的时候更新当前路由
+              activeRouter()
               this.$router.push("/")  //登录成功之后进行页面的跳转，跳转到主页
 
             } else {

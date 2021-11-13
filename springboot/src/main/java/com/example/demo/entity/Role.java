@@ -1,9 +1,12 @@
 package com.example.demo.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+
+import java.util.List;
 
 @TableName("role")
 @Data
@@ -12,4 +15,6 @@ public class Role {
     private Integer id;
     private String name;
     private String comment;
+    @TableField(exist = false)
+    private List<Integer> permissions;
 }

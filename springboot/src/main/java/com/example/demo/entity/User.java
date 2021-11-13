@@ -22,6 +22,8 @@ public class User {
     private String sex;
     private String address;
     private String avatar;
+    @TableField(exist = false)
+    private List<Integer> roles;
 
     @TableField(exist = false)
     private List<Book> bookList;
