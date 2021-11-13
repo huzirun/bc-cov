@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 12/11/2021 20:53:22
+ Date: 13/11/2021 12:20:51
 */
 
 SET NAMES utf8mb4;
@@ -137,7 +137,7 @@ CREATE TABLE `permission`  (
   `comment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '备注',
   `icon` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '图标',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of permission
@@ -151,7 +151,9 @@ INSERT INTO `permission` VALUES (6, 'Map', '/map', '百度地图', 'el-icon-map-
 INSERT INTO `permission` VALUES (7, 'Im', '/im', '聊天室', 'el-icon-chat-round');
 INSERT INTO `permission` VALUES (8, 'Message', '/message', '在线留言', 'el-icon-message');
 INSERT INTO `permission` VALUES (9, 'User', '/user', '用户管理', 'el-icon-user');
-INSERT INTO `permission` VALUES (10, 'Donate', '/donate', '请作者喝杯咖啡', 'el-icon-coffee');
+INSERT INTO `permission` VALUES (10, 'Permission', '/permisssion', '权限菜单', 'el-icon-menu');
+INSERT INTO `permission` VALUES (11, 'Role', '/role', '角色管理', 'el-icon-s-custom');
+INSERT INTO `permission` VALUES (12, 'Donate', '/donate', '请作者喝杯咖啡', 'el-icon-coffee');
 
 -- ----------------------------
 -- Table structure for role
@@ -193,6 +195,12 @@ INSERT INTO `role_permission` VALUES (1, 7);
 INSERT INTO `role_permission` VALUES (1, 8);
 INSERT INTO `role_permission` VALUES (1, 9);
 INSERT INTO `role_permission` VALUES (1, 10);
+INSERT INTO `role_permission` VALUES (1, 11);
+INSERT INTO `role_permission` VALUES (2, 1);
+INSERT INTO `role_permission` VALUES (2, 2);
+INSERT INTO `role_permission` VALUES (2, 3);
+INSERT INTO `role_permission` VALUES (2, 4);
+INSERT INTO `role_permission` VALUES (2, 5);
 
 -- ----------------------------
 -- Table structure for t_order
@@ -259,7 +267,9 @@ CREATE TABLE `user_role`  (
 -- Records of user_role
 -- ----------------------------
 INSERT INTO `user_role` VALUES (1, 1);
-INSERT INTO `user_role` VALUES (13, 1);
 INSERT INTO `user_role` VALUES (13, 2);
+INSERT INTO `user_role` VALUES (14, 2);
+INSERT INTO `user_role` VALUES (15, 2);
+INSERT INTO `user_role` VALUES (16, 2);
 
 SET FOREIGN_KEY_CHECKS = 1;
