@@ -5,6 +5,9 @@
 - 559291872（神秘乐园）
 - 916215755（开天辟地）
 
+## B站视频教程
+
+https://www.bilibili.com/video/BV14y4y1M7Nc/
 
 ## 介绍
 
