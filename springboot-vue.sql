@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 13/11/2021 12:20:51
+ Date: 01/12/2021 19:28:51
 */
 
 SET NAMES utf8mb4;
@@ -137,7 +137,7 @@ CREATE TABLE `permission`  (
   `comment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '备注',
   `icon` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '图标',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of permission
@@ -154,6 +154,7 @@ INSERT INTO `permission` VALUES (9, 'User', '/user', '用户管理', 'el-icon-us
 INSERT INTO `permission` VALUES (10, 'Permission', '/permisssion', '权限菜单', 'el-icon-menu');
 INSERT INTO `permission` VALUES (11, 'Role', '/role', '角色管理', 'el-icon-s-custom');
 INSERT INTO `permission` VALUES (12, 'Donate', '/donate', '请作者喝杯咖啡', 'el-icon-coffee');
+INSERT INTO `permission` VALUES (13, 'Person', '/person', '个人信息', '');
 
 -- ----------------------------
 -- Table structure for role
@@ -196,11 +197,18 @@ INSERT INTO `role_permission` VALUES (1, 8);
 INSERT INTO `role_permission` VALUES (1, 9);
 INSERT INTO `role_permission` VALUES (1, 10);
 INSERT INTO `role_permission` VALUES (1, 11);
+INSERT INTO `role_permission` VALUES (1, 12);
+INSERT INTO `role_permission` VALUES (1, 13);
 INSERT INTO `role_permission` VALUES (2, 1);
 INSERT INTO `role_permission` VALUES (2, 2);
 INSERT INTO `role_permission` VALUES (2, 3);
 INSERT INTO `role_permission` VALUES (2, 4);
 INSERT INTO `role_permission` VALUES (2, 5);
+INSERT INTO `role_permission` VALUES (2, 6);
+INSERT INTO `role_permission` VALUES (2, 7);
+INSERT INTO `role_permission` VALUES (2, 8);
+INSERT INTO `role_permission` VALUES (2, 12);
+INSERT INTO `role_permission` VALUES (2, 13);
 
 -- ----------------------------
 -- Table structure for t_order
