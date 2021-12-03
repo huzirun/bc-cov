@@ -12,6 +12,9 @@ import java.util.Set;
 
 @TableName("user")
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @TableId(type = IdType.AUTO)
     private Integer id;
