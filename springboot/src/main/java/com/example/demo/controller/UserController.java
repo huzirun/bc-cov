@@ -45,7 +45,6 @@ public class UserController extends BaseController {
     PermissionMapper permissionMapper;
     @Resource
     UserRoleMapper userRoleMapper;
-    
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder; //注入bcryct加密
 
