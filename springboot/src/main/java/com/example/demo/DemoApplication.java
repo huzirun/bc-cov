@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+@EnableWebSecurity   //开启security
 public class DemoApplication {
 
 	public static void main(String[] args) {
