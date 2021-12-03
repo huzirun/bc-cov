@@ -16,4 +16,8 @@ public interface UserMapper extends BaseMapper<User> {
     @Select("select count(id) count, address from user GROUP BY address")
     List<UserAddressDto> countAddress();
 
+    // 查询用户名
+    @Select("select password from user where username=#{username}")
+    User selectByName(String username);
+
 }
