@@ -18,6 +18,5 @@ public enum PwdEnum {
      */
     PASSWORD("123");
 
-
     private final String password;
 }
