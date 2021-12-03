@@ -19,6 +19,7 @@ import com.example.demo.mapper.RoleMapper;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.utils.TokenUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -31,6 +32,7 @@ import java.net.URLEncoder;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 @RestController
 @RequestMapping("/user")
 public class UserController extends BaseController {
@@ -41,13 +43,20 @@ public class UserController extends BaseController {
     RoleMapper roleMapper;
     @Resource
     PermissionMapper permissionMapper;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;  //注入bcryct加密
 
     @PostMapping("/login")
     public Result<?> login(@RequestBody User userParam) {
+        User userPwd = userMapper.selectByName(userParam.getUsername());
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", userParam.getUsername());
-        queryWrapper.eq("password", userParam.getPassword());
+        queryWrapper.eq("password", userPwd.getPassword());
         User res = userMapper.selectOne(queryWrapper);
+        // 判断密码是否正确
+        if (!bCryptPasswordEncoder.matches(userParam.getPassword(), userPwd.getPassword())) {
+            return Result.error("0", "密码错误");
+        }
         if (res == null) {
             return Result.error("-1", "用户名或密码错误");
         }
@@ -78,23 +87,42 @@ public class UserController extends BaseController {
 
     @PostMapping("/register")
     public Result<?> register(@RequestBody User user) {
-        User res = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
+       User res = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
         if (res != null) {
             return Result.error("-1", "用户名重复");
         }
-        if (user.getPassword() == null) {
-            user.setPassword("123456");
-        }
-        userMapper.insert(user);
+//        if (user.getPassword() == null) {
+//            user.setPassword("123456");
+//        }
+        User userInfo = User.builder()
+                .username(user.getUsername())
+                .password(bCryptPasswordEncoder.encode(user.getPassword()))
+                .nickName("用户" + IdWorker.getId())
+                .build();
+
+        userMapper.insert(userInfo);
+
+        UserRole userRole = UserRole.builder()
+                .userId(userInfo.getId())
+                .roleId(RoleEnum.USER.getRoleId())
+                .build();
+        userRoleMapper.insert(userRole);
         return Result.success();
     }
 
     @PostMapping
     public Result<?> save(@RequestBody User user) {
-        if (user.getPassword() == null) {
-            user.setPassword("123456");
+       if (user.getPassword() == null) {
+            user.setPassword(bCryptPasswordEncoder.encode(PwdEnum.PASSWORD.getPassword()));
         }
         userMapper.insert(user);
+
+        UserRole userRole = UserRole.builder()
+                .userId(user.getId())
+                .roleId(RoleEnum.USER.getRoleId())
+                .build();
+        userRoleMapper.insert(userRole);
+
         return Result.success();
     }
 
