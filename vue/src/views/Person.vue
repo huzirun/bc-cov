@@ -28,9 +28,9 @@
         <el-form-item label="地址">
           <el-input v-model="form.address"></el-input>
         </el-form-item>
-        <el-form-item label="密码">
-          <el-input v-model="form.password" show-password></el-input>
-        </el-form-item>
+<!--        <el-form-item label="密码">-->
+<!--          <el-input v-model="form.password" show-password></el-input>-->
+<!--        </el-form-item>-->
         <el-form-item label="余额(￥)">
           <el-input v-model="form.account" show-password></el-input>
         </el-form-item>

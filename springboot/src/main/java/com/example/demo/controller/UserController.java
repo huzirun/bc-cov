@@ -58,7 +58,7 @@ public class UserController extends BaseController {
 
         // 判断密码是否正确
         if (!bCryptPasswordEncoder.matches(userParam.getPassword(), userPwd.getPassword())) {
-            return Result.error("0", "密码错误");
+            return Result.error("-1", "密码错误");
         }
         if (res == null) {
             return Result.error("-1", "用户名或密码错误");
@@ -132,6 +132,20 @@ public class UserController extends BaseController {
     @PutMapping
     public Result<?> update(@RequestBody User user) {
         userMapper.updateById(user);
+        return Result.success();
+    }
+
+    @PutMapping("/pass")
+    public Result<?> pass(@RequestBody Map<String, Object> map) {
+        User user = userMapper.selectById((Integer) map.get("userId"));
+        if (user== null) {
+            return Result.error("-1", "未找到用户");
+        }
+        if (!bCryptPasswordEncoder.matches(map.get("password").toString(), user.getPassword())) {
+            return Result.error("-1", "密码错误");
+        }
+        map.put("newPass", (bCryptPasswordEncoder.encode(map.get("newPass").toString())));
+        userMapper.updatePass(map);
         return Result.success();
     }
 

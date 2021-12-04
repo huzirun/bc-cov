@@ -6,7 +6,7 @@
         router
     >
       <div  v-for="m in user.permissions" :key="m.id">
-        <el-menu-item :index="m.path" v-if="m.name !== 'Person'">
+        <el-menu-item :index="m.path" v-if="m.name !== 'Person' && m.name !== 'Password' ">
           <i :class="m.icon"></i>  {{ m.comment }}
         </el-menu-item>
       </div>
