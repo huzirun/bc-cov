@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 01/12/2021 19:28:51
+ Date: 04/12/2021 21:25:06
 */
 
 SET NAMES utf8mb4;
@@ -137,7 +137,7 @@ CREATE TABLE `permission`  (
   `comment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '备注',
   `icon` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '图标',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of permission
@@ -155,6 +155,7 @@ INSERT INTO `permission` VALUES (10, 'Permission', '/permisssion', '权限菜单
 INSERT INTO `permission` VALUES (11, 'Role', '/role', '角色管理', 'el-icon-s-custom');
 INSERT INTO `permission` VALUES (12, 'Donate', '/donate', '请作者喝杯咖啡', 'el-icon-coffee');
 INSERT INTO `permission` VALUES (13, 'Person', '/person', '个人信息', '');
+INSERT INTO `permission` VALUES (14, 'Password', '/password', '修改密码', NULL);
 
 -- ----------------------------
 -- Table structure for role
@@ -199,6 +200,7 @@ INSERT INTO `role_permission` VALUES (1, 10);
 INSERT INTO `role_permission` VALUES (1, 11);
 INSERT INTO `role_permission` VALUES (1, 12);
 INSERT INTO `role_permission` VALUES (1, 13);
+INSERT INTO `role_permission` VALUES (1, 14);
 INSERT INTO `role_permission` VALUES (2, 1);
 INSERT INTO `role_permission` VALUES (2, 2);
 INSERT INTO `role_permission` VALUES (2, 3);
@@ -209,6 +211,7 @@ INSERT INTO `role_permission` VALUES (2, 7);
 INSERT INTO `role_permission` VALUES (2, 8);
 INSERT INTO `role_permission` VALUES (2, 12);
 INSERT INTO `role_permission` VALUES (2, 13);
+INSERT INTO `role_permission` VALUES (2, 14);
 
 -- ----------------------------
 -- Table structure for t_order
@@ -255,11 +258,11 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'admin', 'admin', '管理员', 32, '男', '火星', 'http://localhost:9090/files/888f2d39d0724816a738a716d56ad58a', 100000.00);
-INSERT INTO `user` VALUES (13, 'zhang', '123', '张三', 20, '男', '木星', 'http://localhost:9090/files/d227473b758e4915a3e7c866d2d494cf', 200.00);
-INSERT INTO `user` VALUES (14, 'wang', '123', '王梦晨', 24, '女', '地球', NULL, 300.00);
-INSERT INTO `user` VALUES (15, 'li', '123', '李雪', 22, '女', '银河系', NULL, 500.00);
-INSERT INTO `user` VALUES (16, 'qian', '123', '钱江', 22, '男', '地球', NULL, 700.00);
+INSERT INTO `user` VALUES (1, 'admin', '$2a$10$.cxJ637DYA1PRSzfPmBO0efS1W2eTQefS51b83Nr5xgRNAW0ffgjO', '管理员', 32, '男', '火星', 'http://localhost:9090/files/888f2d39d0724816a738a716d56ad58a', 100000.00);
+INSERT INTO `user` VALUES (13, 'zhang', '$2a$10$h6gfZRMvGFjjQH6HrQf.Q.fvu3jjMc0cv/sGpSanobht5iwCFbucS', '张三', 20, '男', '木星', 'http://localhost:9090/files/d227473b758e4915a3e7c866d2d494cf', 200.00);
+INSERT INTO `user` VALUES (14, 'wang', '$2a$10$h6gfZRMvGFjjQH6HrQf.Q.fvu3jjMc0cv/sGpSanobht5iwCFbucS', '王梦晨', 24, '女', '地球', NULL, 300.00);
+INSERT INTO `user` VALUES (15, 'li', '$2a$10$h6gfZRMvGFjjQH6HrQf.Q.fvu3jjMc0cv/sGpSanobht5iwCFbucS', '李雪', 22, '女', '银河系', NULL, 500.00);
+INSERT INTO `user` VALUES (16, 'qian', '$2a$10$h6gfZRMvGFjjQH6HrQf.Q.fvu3jjMc0cv/sGpSanobht5iwCFbucS', '钱江', 22, '男', '地球', NULL, 700.00);
 
 -- ----------------------------
 -- Table structure for user_role
