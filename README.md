@@ -51,6 +51,7 @@ npm run serve
 - 个人头像
 - 整合Echarts图表  
 - 支付宝沙箱支付
+- SpringSecurity密码加密验证
 
 
 
