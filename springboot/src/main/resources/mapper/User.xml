@@ -11,7 +11,7 @@
         <result property="age" column="age"/>
         <result property="sex" column="sex"/>
         <result property="address" column="address"/>
-        <result property="role" column="role"/>
+        <result property="avatar" column="avatar"/>
         <collection property="bookList" javaType="ArrayList" ofType="com.example.demo.entity.Book">
             <result column="b_id" property="id" />
             <result column="b_name" property="name" />

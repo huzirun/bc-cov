@@ -67,6 +67,8 @@ public class UserController extends BaseController {
         // 1. 从user_role表通过用户id查询所有的角色信息
         Integer userId = res.getId();
         List<UserRole> userRoles = roleMapper.getUserRoleByUserId(userId);
+        // 设置角色id
+        res.setRoles(userRoles.stream().map(UserRole::getRoleId).distinct().collect(Collectors.toList()));
         for (UserRole userRole : userRoles) {
             // 2.根据roleId从role_permission表查询出所有的permissionId
             List<RolePermission> rolePermissions = permissionMapper.getRolePermissionByRoleId(userRole.getRoleId());
@@ -218,7 +220,7 @@ public class UserController extends BaseController {
         // 设置用户的角色id列表
         for (User record : userPage.getRecords()) {
             List<UserRole> roles = roleMapper.getUserRoleByUserId(record.getId());
-            List<Integer> roleIds = roles.stream().map(UserRole::getRoleId).collect(Collectors.toList());
+            List<Integer> roleIds = roles.stream().map(UserRole::getRoleId).distinct().collect(Collectors.toList());
             record.setRoles(roleIds);
         }
         return Result.success(userPage);
