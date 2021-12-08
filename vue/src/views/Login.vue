@@ -2,8 +2,8 @@
   <div class="homepage-hero-module">
     <div class="video-container">
       <div :style="fixStyle" class="filter">
-        <div style="width: 400px; margin: 100px auto">
-          <div style="font-size: 30px; text-align: center; padding: 30px 0; color: #333">欢迎登录</div>
+        <div style=" float: left; width: 300px; margin: 100px auto; margin-left: 200px">
+          <div style="font-size: 30px; text-align: left; padding: 30px 0; color: #333; width: 800px">基于多方位置数据的区块链疫情防控应用</div>
           <el-form ref="form" :model="form" size="normal" :rules="rules">
             <el-form-item prop="username">
               <el-input prefix-icon="el-icon-user-solid" v-model="form.username" placeholder="请输入账号"></el-input>
@@ -12,26 +12,15 @@
               <el-input prefix-icon="el-icon-lock" v-model="form.password" show-password placeholder="请输入密码"></el-input>
             </el-form-item>
             <el-form-item>
-              <div style="display: flex">
-                <el-input prefix-icon="el-icon-key" v-model="form.validCode" style="width: 50%;" placeholder="请输入验证码"></el-input>
-                <ValidCode @input="createValidCode" />
-              </div>
-            </el-form-item>
-<!--            <el-form-item>-->
-<!--              <el-radio v-model="form.role" :label="1" style="color: white">管理员</el-radio>-->
-<!--              <el-radio v-model="form.role" :label="2" style="color: white">普通用户</el-radio>-->
-<!--            </el-form-item>-->
-            <el-form-item>
               <el-button style="width: 100%" type="primary" @click="login">登 录</el-button>
             </el-form-item>
             <el-form-item><el-button type="text" @click="$router.push('/register')">前往注册 >> </el-button></el-form-item>
           </el-form>
         </div>
       </div>
-      <video :style="fixStyle" autoplay loop muted class="fillWidth" v-on:canplay="canplay">
-        <source src="../assets/sea.mp4" type="video/mp4"/>
-        浏览器不支持 video 标签，建议升级浏览器。
-      </video>
+      <el-image :src = "require('@/assets/img.png')" style="float:right; height: 55%;margin-top: 40vh;margin-right: 5vw" >
+
+      </el-image>
     </div>
   </div>
 
@@ -45,11 +34,9 @@ import {activeRouter} from "@/utils/permission";
 export default {
   name: "Login",
   components: {
-    ValidCode,
   },
   data() {
     return {
-      vedioCanPlay: false,
       fixStyle: '',
       form: {role: 1},
       rules: {
@@ -60,13 +47,6 @@ export default {
           {required: true, message: '请输入密码', trigger: 'blur'},
         ],
       },
-      validCode: ''
-      // 加背景图片
-      // bg: {
-      //   backgroundImage: "url(" + require("@/assets/bg.jpg") + ")",
-      //   backgroundRepeat: "no-repeat",
-      //   backgroundSize: "100% 100%"
-      // }
     }
   },
   mounted() {
@@ -101,24 +81,9 @@ export default {
     window.onresize()
   },
   methods: {
-    canplay() {
-      this.vedioCanPlay = true
-    },
-    // 接收验证码组件提交的 4位验证码
-    createValidCode(data) {
-      this.validCode = data
-    },
     login () {
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          if (!this.form.validCode) {
-            this.$message.error("请填写验证码")
-            return
-          }
-          if(this.form.validCode.toLowerCase() !== this.validCode.toLowerCase()) {
-            this.$message.error("验证码错误")
-            return
-          }
           request.post("/user/login", this.form).then(res => {
             if (res.code === '0') {
               this.$message({
@@ -161,11 +126,7 @@ export default {
 .video-container .filter {
   z-index: 1;
   position: absolute;
-  /*background: rgba(0, 0, 0, 0.4);*/
   width: 100%;
 }
 
-.fillWidth {
-  width: 100%;
-}
 </style>
