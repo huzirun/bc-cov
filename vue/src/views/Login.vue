@@ -28,7 +28,6 @@
 
 <script>
 import request from "@/utils/request";
-import ValidCode from "@/components/ValidCode";
 import {activeRouter} from "@/utils/permission";
 
 export default {
