@@ -22,6 +22,8 @@ public class TransactionService {
     private String url;
     @Value("${userAddress}")
     private String user;
+    @Value("${signUserId}")
+    private String signUserId;
     @Value("${groupId}")
     private int groupId;
     @Value("${useAes}")
@@ -45,6 +47,7 @@ public class TransactionService {
             transParam.setContractAddress(contractAddress);
             transParam.setUseAes(useAes);
             transParam.setUser(user);
+            transParam.setSignUserId( signUserId );
             transParam.setContractName(contractName);
             transParam.setFuncName(funcName);
             transParam.setFuncParam(JSONArray.parseArray(funcParam));

@@ -27,6 +27,7 @@ public class TransactionParam {
 
     private Integer groupId;
     private String user;
+    private String signUserId;
     private String contractName;
     private String funcName;
     private String contractAddress;
