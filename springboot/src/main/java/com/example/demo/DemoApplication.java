@@ -15,8 +15,8 @@ public class DemoApplication {
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext applicationContext = SpringApplication.run(DemoApplication.class, args);
-		TransactionService tranService = applicationContext.getBean(TransactionService.class);
-		tranService.sendTransaction();
+//		TransactionService tranService = applicationContext.getBean(TransactionService.class);
+//		tranService.sendTransaction();
 	}
 	@Bean
 	public RestTemplate getRestTemplate() {
