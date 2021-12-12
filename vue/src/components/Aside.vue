@@ -6,7 +6,8 @@
         router
     >
       <div  v-for="m in user.permissions" :key="m.id">
-        <el-menu-item :index="m.path" v-if="m.name !== 'Person' && m.name !== 'Password' ">
+        <el-menu-item :index="m.path" v-if="m.name !== 'Person' && m.name !== 'Password' "
+                      @click="See('http://122.51.61.10:5000/#/home')">
           <i :class="m.icon"></i>  {{ m.comment }}
         </el-menu-item>
       </div>
@@ -27,7 +28,13 @@ export default {
     let userStr = sessionStorage.getItem("user") || "{}"
     this.user = JSON.parse(userStr)
 
+  },
+  methods:{
+    See (e) {
+      window.location.href = e
+    }
   }
+
 }
 </script>
 

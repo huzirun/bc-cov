@@ -3,7 +3,7 @@
     <el-card>
       <div id="myChart" :style="{width: '800px', height: '600px'}"></div>
     </el-card>
-
+<el-image :src = "require('@/assets/datahome.png')"/>
   </div>
 </template>
 
@@ -24,7 +24,7 @@ export default {
       let myChart = this.$root.echarts.init(document.getElementById('myChart'))
       let option = {
         title: {
-          text: '各地区用户比例统计图',
+          text: '用户位置区域分布',
           subtext: '虚拟数据',
           left: 'left'
         },
