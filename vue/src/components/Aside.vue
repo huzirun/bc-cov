@@ -6,8 +6,7 @@
         router
     >
       <div  v-for="m in user.permissions" :key="m.id">
-        <el-menu-item :index="m.path" v-if="m.name !== 'Person' && m.name !== 'Password' "
-                      @click="See('http://122.51.61.10:5000/#/home')">
+        <el-menu-item :index="m.path" v-if="m.name !== 'Person' && m.name !== 'Password' ">
           <i :class="m.icon"></i>  {{ m.comment }}
         </el-menu-item>
       </div>
