@@ -13,3 +13,9 @@
         npm install
 
         npm run serve
+
+### 参考
+源码来自于 https://www.bilibili.com/video/BV14y4y1M7Nc
+
+账户名 admin 
+密码 admin
